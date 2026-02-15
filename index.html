@@ -238,20 +238,6 @@
                 <canvas id="environmentNetwork"></canvas>
                 <div id="networkTooltip" class="network-tooltip"></div>
             </div>
-            <div class="network-legend">
-                <div class="legend-item">
-                    <div class="legend-indicator legend-small"></div>
-                    <span>New Environment</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-indicator legend-medium"></div>
-                    <span>Established</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-indicator legend-large"></div>
-                    <span>Highly Active</span>
-                </div>
-            </div>
             <div class="environments-grid" style="display: none;">
                 <div class="environment-card">
                     <div class="environment-image env-startup"></div>
@@ -395,63 +381,91 @@
     <section id="economy" class="section-container section-dark">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title">The OSCoin Economy</h2>
-                <p class="section-subtitle">Transparent, sustainable, and designed to reward quality decisions</p>
+                <h2 class="section-title">OSCoin Economy</h2>
+                <p class="section-subtitle">Simple. Transparent. Rewarding.</p>
             </div>
-            <div class="economy-grid">
-                <div class="economy-card">
-                    <div class="economy-icon">💰</div>
-                    <h3 class="economy-title">Earn OSCoins</h3>
-                    <ul class="economy-list">
-                        <li>Complete objectives: 5,000-50,000 OSCoins</li>
-                        <li>One-time quests: 10,000-100,000 OSCoins</li>
-                        <li>Quality bonuses: Up to 500% multipliers</li>
-                        <li>Daily streaks: Extra rewards</li>
-                        <li>Referrals: 10% of friend's earnings</li>
-                    </ul>
-                </div>
-                <div class="economy-card">
-                    <div class="economy-icon">💸</div>
-                    <h3 class="economy-title">Redeem for Cash</h3>
-                    <ul class="economy-list">
-                        <li>Exchange rate: 1,000 OSCoins = $1 USD</li>
-                        <li>Minimum: 10,000 OSCoins ($10)</li>
-                        <li>Methods: PayPal, Stripe, Crypto, Bank</li>
-                        <li>Processing: 3-5 business days</li>
-                        <li>No hidden fees or commissions</li>
-                    </ul>
-                </div>
-                <div class="economy-card">
-                    <div class="economy-icon">🏆</div>
-                    <h3 class="economy-title">Top Earner Potential</h3>
-                    <ul class="economy-list">
-                        <li>Casual players: $300-600/month</li>
-                        <li>Regular players: $1,000-2,000/month</li>
-                        <li>Active daily contributors: $2,000-3,000/month</li>
-                        <li>Top 10%: $5,000+/month</li>
-                        <li>Creators: $10,000+/month</li>
-                        <li>Leaderboard bonuses available</li>
-                    </ul>
+
+            <!-- Exchange Rate Visual -->
+            <div class="economy-exchange">
+                <div class="exchange-visual">
+                    <div class="exchange-coin">
+                        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <circle cx="40" cy="40" r="36" fill="url(#goldGradient)" stroke="#d4af37" stroke-width="3"/>
+                            <text x="40" y="52" font-family="Arial" font-size="32" font-weight="bold" text-anchor="middle" fill="#000">$</text>
+                            <defs>
+                                <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#f4d03f"/>
+                                    <stop offset="100%" style="stop-color:#d4af37"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="exchange-label">1,000 OSC</div>
+                    </div>
+                    <div class="exchange-equals">=</div>
+                    <div class="exchange-cash">
+                        <div class="cash-amount">$1</div>
+                        <div class="exchange-label">USD</div>
+                    </div>
                 </div>
             </div>
-            <div class="economy-assurance">
-                <div class="assurance-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Sustainable economy with 70% revenue cap for payouts</span>
+
+            <!-- Earning Tiers Visual -->
+            <div class="economy-tiers">
+                <div class="tier-item">
+                    <div class="tier-icon">🌱</div>
+                    <div class="tier-amount">$300-600</div>
+                    <div class="tier-label">Casual</div>
+                    <div class="tier-bar">
+                        <div class="tier-fill" style="width: 30%"></div>
+                    </div>
                 </div>
-                <div class="assurance-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 15V17M6 21H18C19.1046 21 20 20.1046 20 19V13C20 11.8954 19.1046 11 18 11H6C4.89543 11 4 11.8954 4 13V19C4 20.1046 4.89543 21 6 21ZM16 11V7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V11H16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span>Secure payment processing with KYC verification</span>
+                <div class="tier-item">
+                    <div class="tier-icon">⚡</div>
+                    <div class="tier-amount">$1K-2K</div>
+                    <div class="tier-label">Regular</div>
+                    <div class="tier-bar">
+                        <div class="tier-fill" style="width: 50%"></div>
+                    </div>
                 </div>
-                <div class="assurance-item">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M9 5H7C5.89543 5 5 5.89543 5 7V19C5 20.1046 5.89543 21 7 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H15M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 4M12 12H15M12 16H15M9 12H9.01M9 16H9.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span>Transparent tracking of all earnings and redemptions</span>
+                <div class="tier-item tier-highlight">
+                    <div class="tier-icon">🔥</div>
+                    <div class="tier-amount">$2K-3K</div>
+                    <div class="tier-label">Active Daily</div>
+                    <div class="tier-bar">
+                        <div class="tier-fill" style="width: 70%"></div>
+                    </div>
+                </div>
+                <div class="tier-item">
+                    <div class="tier-icon">💎</div>
+                    <div class="tier-amount">$5K+</div>
+                    <div class="tier-label">Top 10%</div>
+                    <div class="tier-bar">
+                        <div class="tier-fill" style="width: 90%"></div>
+                    </div>
+                </div>
+                <div class="tier-item">
+                    <div class="tier-icon">👑</div>
+                    <div class="tier-amount">$10K+</div>
+                    <div class="tier-label">Creators</div>
+                    <div class="tier-bar">
+                        <div class="tier-fill" style="width: 100%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reward Highlights -->
+            <div class="economy-highlights">
+                <div class="highlight-card">
+                    <div class="highlight-value">50K</div>
+                    <div class="highlight-label">Max OSCoins per Objective</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-value">100K</div>
+                    <div class="highlight-label">Quest Rewards</div>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-value">500%</div>
+                    <div class="highlight-label">Quality Multiplier</div>
                 </div>
             </div>
         </div>

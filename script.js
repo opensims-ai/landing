@@ -216,23 +216,28 @@ document.addEventListener('DOMContentLoaded', function() {
     document.head.appendChild(style);
 
     // ============================================
-    // Navigation Scroll Effect
+    // Navigation Scroll Effect (Stabilized)
     // ============================================
     const nav = document.querySelector('.nav-container');
     let lastScroll = 0;
+    let ticking = false;
 
     window.addEventListener('scroll', () => {
-        const currentScroll = window.pageYOffset;
+        lastScroll = window.pageYOffset;
 
-        if (currentScroll > 100) {
-            nav.style.background = 'rgba(10, 10, 26, 0.95)';
-            nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.5)';
-        } else {
-            nav.style.background = 'rgba(10, 10, 26, 0.8)';
-            nav.style.boxShadow = 'none';
+        if (!ticking) {
+            window.requestAnimationFrame(() => {
+                if (lastScroll > 100) {
+                    nav.style.background = 'rgba(15, 15, 26, 0.95)';
+                    nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.3)';
+                } else {
+                    nav.style.background = 'rgba(15, 15, 26, 0.85)';
+                    nav.style.boxShadow = 'none';
+                }
+                ticking = false;
+            });
+            ticking = true;
         }
-
-        lastScroll = currentScroll;
     });
 
     // ============================================
@@ -740,20 +745,37 @@ document.addEventListener('DOMContentLoaded', function() {
             [16, 25], [17, 3], [18, 25], [20, 21], [22, 25], [24, 26], [26, 28], [27, 9], [29, 9]
         ];
 
-        // Resize canvas
+        // Resize canvas with high DPI support
         function resizeCanvas() {
             const container = canvas.parentElement;
-            canvas.width = container.clientWidth;
-            canvas.height = container.clientHeight;
-            console.log('Canvas resized to:', canvas.width, 'x', canvas.height);
+            const dpr = window.devicePixelRatio || 1;
+
+            // Set display size
+            canvas.style.width = container.clientWidth + 'px';
+            canvas.style.height = container.clientHeight + 'px';
+
+            // Set actual canvas size for high DPI
+            canvas.width = container.clientWidth * dpr;
+            canvas.height = container.clientHeight * dpr;
+
+            // Scale context for high DPI
+            ctx.scale(dpr, dpr);
+
+            // Enable image smoothing for better quality
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
+            console.log('Canvas resized to:', container.clientWidth, 'x', container.clientHeight, 'DPR:', dpr);
             initializePositions();
         }
 
-        // Initialize node positions with clustering (denser layout)
+        // Initialize node positions with clustering (spread out layout)
         function initializePositions() {
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const clusterRadius = Math.min(canvas.width, canvas.height) * 0.32;
+            const displayWidth = canvas.clientWidth || canvas.width;
+            const displayHeight = canvas.clientHeight || canvas.height;
+            const centerX = displayWidth / 2;
+            const centerY = displayHeight / 2;
+            const clusterRadius = Math.min(displayWidth, displayHeight) * 0.38;
 
             const categories = {
                 business: { angle: 0, count: 0 },
@@ -813,6 +835,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update node positions with gentle floating
         function updatePositions() {
+            const displayWidth = canvas.clientWidth || canvas.width;
+            const displayHeight = canvas.clientHeight || canvas.height;
+
             environments.forEach(env => {
                 // Apply velocity
                 env.x += env.vx;
@@ -827,23 +852,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 env.vy *= 0.98;
 
                 // Boundary collision with soft bounce
-                const margin = 80;
-                if (env.x < margin || env.x > canvas.width - margin) {
+                const margin = 100;
+                if (env.x < margin || env.x > displayWidth - margin) {
                     env.vx *= -0.5;
-                    env.x = Math.max(margin, Math.min(canvas.width - margin, env.x));
+                    env.x = Math.max(margin, Math.min(displayWidth - margin, env.x));
                 }
-                if (env.y < margin || env.y > canvas.height - margin) {
+                if (env.y < margin || env.y > displayHeight - margin) {
                     env.vy *= -0.5;
-                    env.y = Math.max(margin, Math.min(canvas.height - margin, env.y));
+                    env.y = Math.max(margin, Math.min(displayHeight - margin, env.y));
                 }
 
                 // Gentle pull toward center
-                const centerX = canvas.width / 2;
-                const centerY = canvas.height / 2;
+                const centerX = displayWidth / 2;
+                const centerY = displayHeight / 2;
                 const dx = centerX - env.x;
                 const dy = centerY - env.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist > 200) {
+                if (dist > 250) {
                     env.vx += (dx / dist) * 0.02;
                     env.vy += (dy / dist) * 0.02;
                 }
@@ -917,31 +942,47 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.lineWidth = isHovered ? 3 : 2;
                 ctx.stroke();
 
-                // Icon
-                ctx.font = `${size * 0.8}px Arial`;
+                // Icon with better rendering
+                ctx.save();
+                ctx.font = `bold ${Math.floor(size * 0.7)}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", Arial`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
                 ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+                ctx.shadowBlur = 4;
                 ctx.fillText(env.icon, env.x, env.y);
+                ctx.restore();
 
-                // Actor count indicator (small badge)
-                if (!isHovered && size > 30) {
-                    ctx.font = '10px Arial';
-                    ctx.fillStyle = '#000000';
+                // Actor count indicator (small badge) with golden accent
+                if (!isHovered && size > 25) {
+                    const badgeX = env.x + size * 0.55;
+                    const badgeY = env.y - size * 0.55;
+                    const badgeRadius = Math.max(10, size * 0.22);
+
                     ctx.beginPath();
-                    ctx.arc(env.x + size * 0.6, env.y - size * 0.6, 12, 0, Math.PI * 2);
-                    ctx.fillStyle = '#00d9ff';
+                    ctx.arc(badgeX, badgeY, badgeRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#d4af37';
                     ctx.fill();
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+
+                    ctx.font = `bold ${Math.floor(badgeRadius * 1.2)}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
                     ctx.fillStyle = '#000000';
-                    ctx.fillText(env.actors, env.x + size * 0.6, env.y - size * 0.6);
+                    ctx.fillText(env.actors, badgeX, badgeY);
                 }
             });
         }
 
         // Animation loop
         function animate() {
+            const displayWidth = canvas.clientWidth || canvas.width;
+            const displayHeight = canvas.clientHeight || canvas.height;
+
             // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, displayWidth, displayHeight);
 
             // Draw subtle grid for debugging (remove later)
             // ctx.strokeStyle = 'rgba(0, 217, 255, 0.05)';

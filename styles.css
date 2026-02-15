@@ -19,6 +19,8 @@
     --color-secondary: #8b7aa8;
     --color-accent: #a87b8b;
     --color-success: #7aa88b;
+    --color-gold: #d4af37;
+    --color-gold-muted: #b8984f;
 
     --gradient-primary: linear-gradient(135deg, #5b9aa8 0%, #8b7aa8 100%);
     --gradient-secondary: linear-gradient(135deg, #a87b8b 0%, #a88b7a 100%);
@@ -415,10 +417,8 @@ button {
     font-family: var(--font-heading);
     font-size: 3rem;
     font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .stat-label {
@@ -629,19 +629,20 @@ button {
 }
 
 .network-tooltip {
-    position: absolute;
-    background: rgba(15, 15, 26, 0.95);
+    position: fixed;
+    background: rgba(15, 15, 26, 0.98);
     border: 2px solid rgba(91, 154, 168, 0.4);
     border-radius: var(--radius-sm);
     padding: var(--spacing-md);
     min-width: 280px;
+    max-width: 320px;
     pointer-events: none;
     opacity: 0;
     transform: translate(-50%, -100%) translateY(-20px);
     transition: opacity var(--transition-base);
-    z-index: 1000;
-    box-shadow: var(--shadow-glow);
-    backdrop-filter: blur(10px);
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
 }
 
 .network-tooltip.visible {
@@ -897,86 +898,153 @@ button {
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    color: var(--color-success);
+    color: var(--color-gold);
     font-weight: 600;
     font-size: 0.875rem;
 }
 
-/* ============================================
-   Economy Section
-   ============================================ */
-
-.economy-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: var(--spacing-lg);
-    margin-bottom: var(--spacing-2xl);
+.environment-reward svg {
+    color: var(--color-gold);
 }
 
-.economy-card {
-    background: rgba(22, 22, 31, 0.5);
+/* ============================================
+   Economy Section - Visual Design
+   ============================================ */
+
+.economy-exchange {
+    margin-bottom: var(--spacing-3xl);
+}
+
+.exchange-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-2xl);
+    background: rgba(22, 22, 31, 0.4);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: var(--radius-sm);
+}
+
+.exchange-coin {
+    text-align: center;
+}
+
+.exchange-coin svg {
+    filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.4));
+}
+
+.exchange-label {
+    margin-top: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+}
+
+.exchange-equals {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    color: var(--color-text-secondary);
+}
+
+.cash-amount {
+    font-family: var(--font-heading);
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.economy-tiers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-3xl);
+}
+
+.tier-item {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: rgba(22, 22, 31, 0.4);
     border: 1px solid rgba(91, 154, 168, 0.15);
-    border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
+    border-radius: var(--radius-sm);
     transition: all var(--transition-base);
 }
 
-.economy-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(91, 154, 168, 0.35);
-    box-shadow: var(--shadow-glow);
-    background: rgba(22, 22, 31, 0.7);
+.tier-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(91, 154, 168, 0.3);
 }
 
-.economy-icon {
-    font-size: 3rem;
-    margin-bottom: var(--spacing-md);
+.tier-highlight {
+    border-color: rgba(212, 175, 55, 0.3);
+    background: rgba(212, 175, 55, 0.05);
 }
 
-.economy-title {
+.tier-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tier-amount {
     font-family: var(--font-heading);
     font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-xs);
+}
+
+.tier-label {
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
     margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.economy-list {
-    list-style: none;
+.tier-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(91, 154, 168, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
 }
 
-.economy-list li {
-    color: var(--color-text-secondary);
-    padding: var(--spacing-xs) 0;
-    padding-left: var(--spacing-md);
-    position: relative;
+.tier-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-gold));
+    border-radius: 3px;
+    transition: width 0.8s ease;
 }
 
-.economy-list li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--color-primary);
+.economy-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
 }
 
-.economy-assurance {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-    background: rgba(91, 154, 168, 0.05);
-    border: 1px solid rgba(91, 154, 168, 0.15);
-    border-radius: var(--radius-lg);
+.highlight-card {
+    text-align: center;
     padding: var(--spacing-xl);
+    background: rgba(212, 175, 55, 0.05);
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    border-radius: var(--radius-sm);
 }
 
-.assurance-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+.highlight-value {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+}
+
+.highlight-label {
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
-}
-
-.assurance-item svg {
-    color: var(--color-primary);
-    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 /* ============================================
@@ -1030,8 +1098,9 @@ button {
 }
 
 .highlight {
-    color: var(--color-primary);
+    color: var(--color-gold);
     font-weight: 700;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
 }
 
 .waitlist-form {
@@ -1283,8 +1352,7 @@ button {
     }
 
     .features-grid,
-    .environments-grid,
-    .economy-grid {
+    .environments-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1318,6 +1386,23 @@ button {
     .network-filter {
         font-size: 0.75rem;
         padding: 0.4rem 1rem;
+    }
+
+    .exchange-visual {
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .cash-amount {
+        font-size: 3rem;
+    }
+
+    .economy-tiers {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .highlight-value {
+        font-size: 2rem;
     }
 }
 
