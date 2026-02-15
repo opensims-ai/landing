@@ -280,8 +280,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const canvas = document.getElementById('environmentNetwork');
     const tooltip = document.getElementById('networkTooltip');
 
+    console.log('Canvas element:', canvas);
+    console.log('Tooltip element:', tooltip);
+
     if (canvas && tooltip) {
         const ctx = canvas.getContext('2d');
+        console.log('Canvas context:', ctx);
         let animationId;
         let hoveredNode = null;
         let currentFilter = 'all';
@@ -478,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const container = canvas.parentElement;
             canvas.width = container.clientWidth;
             canvas.height = container.clientHeight;
+            console.log('Canvas resized to:', canvas.width, 'x', canvas.height);
             initializePositions();
         }
 
@@ -658,7 +663,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Animation loop
         function animate() {
+            // Clear canvas
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw subtle grid for debugging (remove later)
+            // ctx.strokeStyle = 'rgba(0, 217, 255, 0.05)';
+            // ctx.lineWidth = 1;
+            // for (let i = 0; i < canvas.width; i += 50) {
+            //     ctx.beginPath();
+            //     ctx.moveTo(i, 0);
+            //     ctx.lineTo(i, canvas.height);
+            //     ctx.stroke();
+            // }
+            // for (let i = 0; i < canvas.height; i += 50) {
+            //     ctx.beginPath();
+            //     ctx.moveTo(0, i);
+            //     ctx.lineTo(canvas.width, i);
+            //     ctx.stroke();
+            // }
 
             updatePositions();
             drawConnections();
@@ -765,7 +787,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Initialize
         resizeCanvas();
-        animate();
+
+        // Double-check canvas has dimensions
+        if (canvas.width === 0 || canvas.height === 0) {
+            console.warn('Canvas has zero dimensions, retrying...');
+            setTimeout(() => {
+                resizeCanvas();
+                animate();
+            }, 100);
+        } else {
+            animate();
+        }
 
         window.addEventListener('resize', resizeCanvas);
 
