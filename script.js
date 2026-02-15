@@ -280,20 +280,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ============================================
     // ============================================
-    // Network Visualization for Environments
+    // Network Visualization for Environments (D3.js)
     // ============================================
-    const canvas = document.getElementById('environmentNetwork');
-    const tooltip = document.getElementById('networkTooltip');
 
-    console.log('Canvas element:', canvas);
-    console.log('Tooltip element:', tooltip);
+    // Check if SVG element exists
+    const svgElement = document.getElementById('environmentNetwork');
+    const networkTooltip = document.getElementById('networkTooltip');
 
-    if (canvas && tooltip) {
-        const ctx = canvas.getContext('2d');
-        console.log('Canvas context:', ctx);
-        let animationId;
-        let hoveredNode = null;
-        let currentFilter = 'all';
+    console.log('SVG element:', svgElement);
+    console.log('Tooltip element:', networkTooltip);
+
+    if (svgElement && networkTooltip) {
+        console.log('Initializing D3.js network visualization...');
 
         // Environment data with clustering - Realistic Business Domains
         // Environment data with clustering - Realistic Business Domains
@@ -736,12 +734,49 @@ const environments = [
     }
 ];
 
+        // Connection pairs - defines which environments are linked
+        const connections = [
+            // Finance cluster (1-4)
+            [1, 2], [1, 3], [2, 3], [2, 4], [3, 4],
+
+            // Trading cluster (5-8)
+            [5, 6], [5, 7], [6, 7], [6, 8], [7, 8],
+
+            // Assistant cluster (9-11)
+            [9, 10], [9, 11], [10, 11],
+
+            // Development cluster (12-16)
+            [12, 13], [12, 14], [12, 15], [12, 16],
+            [13, 14], [13, 15], [13, 16],
+            [14, 15], [15, 16],
+
+            // Accounting cluster (17-19)
+            [17, 18], [17, 19], [18, 19],
+
+            // Legal cluster (20-23)
+            [20, 21], [20, 22], [21, 22], [21, 23], [22, 23],
+
+            // Operations cluster (24-27)
+            [24, 25], [24, 26], [24, 27], [25, 26], [26, 27],
+
+            // Strategy cluster (28-30)
+            [28, 29], [28, 30], [29, 30],
+
+            // Cross-category connections
+            [1, 5], [2, 6], [3, 17], [4, 18],  // Finance-Trading-Accounting
+            [9, 24], [10, 26], [11, 27],        // Assistant-Operations
+            [12, 13], [14, 24], [15, 12],       // Dev-Operations
+            [17, 20], [18, 21], [19, 22],       // Accounting-Legal
+            [20, 28], [22, 28], [23, 29],       // Legal-Strategy
+            [24, 28], [25, 29], [27, 28],       // Operations-Strategy
+            [1, 28], [5, 29], [12, 30]          // Various-Strategy
+        ];
+
         // ============================================
         // D3.js Network Visualization
         // ============================================
 // D3.js Network Visualization for Environments
 const svg = d3.select('#environmentNetwork');
-const tooltip = document.getElementById('networkTooltip');
 let currentFilter = 'all';
 
 // Get container dimensions
@@ -854,8 +889,8 @@ node.on('mouseover', function(event, d) {
     showTooltip(event, d);
 })
 .on('mousemove', function(event) {
-    tooltip.style.left = event.pageX + 'px';
-    tooltip.style.top = (event.pageY - 20) + 'px';
+    networkTooltip.style.left = event.pageX + 'px';
+    networkTooltip.style.top = (event.pageY - 20) + 'px';
 })
 .on('mouseout', function(event, d) {
     d3.select(this).select('circle')
@@ -903,7 +938,7 @@ function dragended(event, d) {
 }
 
 function showTooltip(event, env) {
-    tooltip.innerHTML = `
+    networkTooltip.innerHTML = `
         <div class="tooltip-category">${env.category}</div>
         <div class="tooltip-header">
             <span class="tooltip-icon">${env.icon}</span>
@@ -936,11 +971,11 @@ function showTooltip(event, env) {
             <span>${env.reward}</span>
         </div>
     `;
-    tooltip.classList.add('visible');
+    networkTooltip.classList.add('visible');
 }
 
 function hideTooltip() {
-    tooltip.classList.remove('visible');
+    networkTooltip.classList.remove('visible');
 }
 
 // Filter functionality
