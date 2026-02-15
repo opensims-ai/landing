@@ -788,15 +788,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const linkGroup = g.append('g').attr('class', 'links');
         const nodeGroup = g.append('g').attr('class', 'nodes');
 
-        // Enable zoom
-        const zoom = d3.zoom()
-            .scaleExtent([0.5, 3])
-            .on('zoom', (event) => {
-                g.attr('transform', event.transform);
-            });
-
-        svg.call(zoom);
-
         // Prepare data
         const nodes = environments.map(d => ({...d}));
         const links = connections.map(([source, target]) => ({
@@ -804,14 +795,16 @@ document.addEventListener('DOMContentLoaded', function() {
             target: target - 1
         }));
 
-        // Create force simulation
+        // Create force simulation - optimized to spread horizontally
         const simulation = d3.forceSimulation(nodes)
             .force('link', d3.forceLink(links)
                 .id(d => d.id - 1)
-                .distance(80))
-            .force('charge', d3.forceManyBody().strength(-300))
+                .distance(120))
+            .force('charge', d3.forceManyBody().strength(-500))
             .force('center', d3.forceCenter(width / 2, height / 2))
-            .force('collision', d3.forceCollide().radius(d => getNodeSize(d) + 5));
+            .force('collision', d3.forceCollide().radius(d => getNodeSize(d) + 10))
+            .force('x', d3.forceX(width / 2).strength(0.05))
+            .force('y', d3.forceY(height / 2).strength(0.1));
 
         // Draw links
         const link = linkGroup.selectAll('line')
