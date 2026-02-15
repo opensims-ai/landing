@@ -785,19 +785,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Initialize
-        resizeCanvas();
+        // Initialize after a short delay to ensure layout is complete
+        setTimeout(() => {
+            resizeCanvas();
 
-        // Double-check canvas has dimensions
-        if (canvas.width === 0 || canvas.height === 0) {
-            console.warn('Canvas has zero dimensions, retrying...');
-            setTimeout(() => {
-                resizeCanvas();
+            // Double-check canvas has dimensions
+            if (canvas.width === 0 || canvas.height === 0) {
+                console.error('Canvas still has zero dimensions after resize!');
+                console.log('Container dimensions:', canvas.parentElement.clientWidth, 'x', canvas.parentElement.clientHeight);
+            } else {
+                console.log('Starting animation...');
                 animate();
-            }, 100);
-        } else {
-            animate();
-        }
+            }
+        }, 50);
 
         window.addEventListener('resize', resizeCanvas);
 
