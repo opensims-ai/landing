@@ -9,24 +9,24 @@
 }
 
 :root {
-    /* Color Palette - Multiverse Theme */
-    --color-bg-primary: #0a0a1a;
-    --color-bg-secondary: #12121f;
-    --color-bg-tertiary: #1a1a2e;
+    /* Color Palette - Matte Multiverse Theme */
+    --color-bg-primary: #0f0f1a;
+    --color-bg-secondary: #16161f;
+    --color-bg-tertiary: #1c1c28;
 
-    --color-primary: #00d9ff;
-    --color-primary-dark: #0099cc;
-    --color-secondary: #bd00ff;
-    --color-accent: #ff006e;
-    --color-success: #00ff88;
+    --color-primary: #5b9aa8;
+    --color-primary-dark: #4a7d8a;
+    --color-secondary: #8b7aa8;
+    --color-accent: #a87b8b;
+    --color-success: #7aa88b;
 
-    --gradient-primary: linear-gradient(135deg, #00d9ff 0%, #bd00ff 100%);
-    --gradient-secondary: linear-gradient(135deg, #ff006e 0%, #ff7b00 100%);
-    --gradient-multiverse: linear-gradient(135deg, #00d9ff 0%, #bd00ff 50%, #ff006e 100%);
+    --gradient-primary: linear-gradient(135deg, #5b9aa8 0%, #8b7aa8 100%);
+    --gradient-secondary: linear-gradient(135deg, #a87b8b 0%, #a88b7a 100%);
+    --gradient-multiverse: linear-gradient(135deg, #5b9aa8 0%, #8b7aa8 50%, #a87b8b 100%);
 
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #b8b8d4;
-    --color-text-muted: #6e6e8f;
+    --color-text-primary: #e8e8f0;
+    --color-text-secondary: #a8a8c0;
+    --color-text-muted: #6e6e88;
 
     /* Typography */
     --font-primary: 'Exo 2', sans-serif;
@@ -47,12 +47,12 @@
     --radius-lg: 2px;
     --radius-full: 2px;
 
-    /* Shadows */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
-    --shadow-glow: 0 0 40px rgba(0, 217, 255, 0.3);
-    --shadow-glow-purple: 0 0 40px rgba(189, 0, 255, 0.3);
+    /* Shadows - Matte & Subtle */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 24px rgba(91, 154, 168, 0.15);
+    --shadow-glow-purple: 0 0 24px rgba(139, 122, 168, 0.15);
 
     /* Transitions */
     --transition-fast: 0.2s ease;
@@ -78,12 +78,12 @@ html {
 
 /* Text Selection Styling */
 ::selection {
-    background: rgba(0, 217, 255, 0.3);
+    background: rgba(91, 154, 168, 0.25);
     color: var(--color-text-primary);
 }
 
 ::-moz-selection {
-    background: rgba(0, 217, 255, 0.3);
+    background: rgba(91, 154, 168, 0.25);
     color: var(--color-text-primary);
 }
 
@@ -220,9 +220,9 @@ button {
     left: 0;
     right: 0;
     z-index: 1000;
-    background: rgba(10, 10, 26, 0.8);
+    background: rgba(15, 15, 26, 0.85);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 217, 255, 0.2);
+    border-bottom: 1px solid rgba(91, 154, 168, 0.15);
 }
 
 .nav-content {
@@ -293,7 +293,8 @@ button {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 0 60px rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 32px rgba(91, 154, 168, 0.25);
+    opacity: 0.95;
 }
 
 .btn-secondary {
@@ -346,8 +347,8 @@ button {
     align-items: center;
     gap: var(--spacing-xs);
     padding: 0.5rem 1rem;
-    background: rgba(0, 217, 255, 0.1);
-    border: 1px solid rgba(0, 217, 255, 0.3);
+    background: rgba(91, 154, 168, 0.08);
+    border: 1px solid rgba(91, 154, 168, 0.25);
     border-radius: var(--radius-full);
     margin-bottom: var(--spacing-lg);
     animation: fadeInUp 0.8s ease;
@@ -438,9 +439,9 @@ button {
 }
 
 .feature-card {
-    background: rgba(18, 18, 31, 0.6);
+    background: rgba(22, 22, 31, 0.5);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    border: 1px solid rgba(91, 154, 168, 0.15);
     border-radius: var(--radius-lg);
     padding: var(--spacing-xl);
     transition: all var(--transition-base);
@@ -448,8 +449,9 @@ button {
 
 .feature-card:hover {
     transform: translateY(-8px);
-    border-color: var(--color-primary);
+    border-color: rgba(91, 154, 168, 0.4);
     box-shadow: var(--shadow-glow);
+    background: rgba(22, 22, 31, 0.7);
 }
 
 .feature-icon {
@@ -464,33 +466,33 @@ button {
 }
 
 .icon-brain {
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(0, 217, 255, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(91, 154, 168, 0.15) 0%, rgba(91, 154, 168, 0.05) 100%);
     color: var(--color-primary);
 }
 
 .icon-money {
-    background: linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 255, 136, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(122, 168, 139, 0.15) 0%, rgba(122, 168, 139, 0.05) 100%);
     color: var(--color-success);
 }
 
 .icon-world {
-    background: linear-gradient(135deg, rgba(189, 0, 255, 0.2) 0%, rgba(189, 0, 255, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(139, 122, 168, 0.15) 0%, rgba(139, 122, 168, 0.05) 100%);
     color: var(--color-secondary);
 }
 
 .icon-gamepad {
-    background: linear-gradient(135deg, rgba(255, 0, 110, 0.2) 0%, rgba(255, 0, 110, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(168, 123, 139, 0.15) 0%, rgba(168, 123, 139, 0.05) 100%);
     color: var(--color-accent);
 }
 
 .icon-users {
-    background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(189, 0, 255, 0.2) 100%);
+    background: linear-gradient(135deg, rgba(91, 154, 168, 0.15) 0%, rgba(139, 122, 168, 0.15) 100%);
     color: var(--color-primary);
 }
 
 .icon-creator {
-    background: linear-gradient(135deg, rgba(255, 123, 0, 0.2) 0%, rgba(255, 0, 110, 0.2) 100%);
-    color: #ff7b00;
+    background: linear-gradient(135deg, rgba(168, 139, 122, 0.15) 0%, rgba(168, 123, 139, 0.15) 100%);
+    color: #a88b7a;
 }
 
 .feature-card:hover .feature-icon {
@@ -579,8 +581,8 @@ button {
 
 .network-filter {
     padding: 0.5rem 1.5rem;
-    background: rgba(18, 18, 31, 0.6);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(22, 22, 31, 0.5);
+    border: 1px solid rgba(91, 154, 168, 0.2);
     border-radius: var(--radius-sm);
     color: var(--color-text-secondary);
     font-family: var(--font-primary);
@@ -591,9 +593,9 @@ button {
 }
 
 .network-filter:hover {
-    border-color: var(--color-primary);
+    border-color: rgba(91, 154, 168, 0.4);
     color: var(--color-primary);
-    background: rgba(0, 217, 255, 0.1);
+    background: rgba(91, 154, 168, 0.1);
 }
 
 .network-filter.active {
@@ -607,8 +609,8 @@ button {
     position: relative;
     width: 100%;
     height: 600px;
-    background: rgba(18, 18, 31, 0.4);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(22, 22, 31, 0.3);
+    border: 1px solid rgba(91, 154, 168, 0.15);
     border-radius: var(--radius-sm);
     overflow: hidden;
     margin-bottom: var(--spacing-xl);
@@ -628,8 +630,8 @@ button {
 
 .network-tooltip {
     position: absolute;
-    background: rgba(10, 10, 26, 0.95);
-    border: 2px solid var(--color-primary);
+    background: rgba(15, 15, 26, 0.95);
+    border: 2px solid rgba(91, 154, 168, 0.4);
     border-radius: var(--radius-sm);
     padding: var(--spacing-md);
     min-width: 280px;
@@ -750,7 +752,7 @@ button {
     height: 20px;
     border-radius: 50%;
     background: var(--gradient-primary);
-    box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 8px rgba(91, 154, 168, 0.3);
 }
 
 .legend-small {
@@ -775,8 +777,8 @@ button {
 }
 
 .environment-card {
-    background: rgba(18, 18, 31, 0.8);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(22, 22, 31, 0.6);
+    border: 1px solid rgba(91, 154, 168, 0.15);
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: all var(--transition-base);
@@ -784,7 +786,7 @@ button {
 
 .environment-card:hover {
     transform: translateY(-8px);
-    border-color: var(--color-primary);
+    border-color: rgba(91, 154, 168, 0.35);
     box-shadow: var(--shadow-glow);
 }
 
@@ -859,15 +861,15 @@ button {
 }
 
 .tag-difficulty {
-    background: rgba(0, 217, 255, 0.2);
+    background: rgba(91, 154, 168, 0.15);
     color: var(--color-primary);
-    border: 1px solid var(--color-primary);
+    border: 1px solid rgba(91, 154, 168, 0.35);
 }
 
 .tag-time {
-    background: rgba(189, 0, 255, 0.2);
+    background: rgba(139, 122, 168, 0.15);
     color: var(--color-secondary);
-    border: 1px solid var(--color-secondary);
+    border: 1px solid rgba(139, 122, 168, 0.35);
 }
 
 .environment-title {
@@ -912,8 +914,8 @@ button {
 }
 
 .economy-card {
-    background: rgba(18, 18, 31, 0.6);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(22, 22, 31, 0.5);
+    border: 1px solid rgba(91, 154, 168, 0.15);
     border-radius: var(--radius-lg);
     padding: var(--spacing-xl);
     transition: all var(--transition-base);
@@ -921,8 +923,9 @@ button {
 
 .economy-card:hover {
     transform: translateY(-8px);
-    border-color: var(--color-primary);
+    border-color: rgba(91, 154, 168, 0.35);
     box-shadow: var(--shadow-glow);
+    background: rgba(22, 22, 31, 0.7);
 }
 
 .economy-icon {
@@ -958,8 +961,8 @@ button {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    background: rgba(0, 217, 255, 0.05);
-    border: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(91, 154, 168, 0.05);
+    border: 1px solid rgba(91, 154, 168, 0.15);
     border-radius: var(--radius-lg);
     padding: var(--spacing-xl);
 }
@@ -981,8 +984,8 @@ button {
    ============================================ */
 
 .waitlist-container {
-    background: rgba(18, 18, 31, 0.8);
-    border: 2px solid rgba(0, 217, 255, 0.3);
+    background: rgba(22, 22, 31, 0.7);
+    border: 2px solid rgba(91, 154, 168, 0.25);
     border-radius: var(--radius-lg);
     padding: var(--spacing-2xl);
     text-align: center;
@@ -999,7 +1002,7 @@ button {
     height: 200%;
     background: conic-gradient(
         transparent,
-        rgba(0, 217, 255, 0.1),
+        rgba(91, 154, 168, 0.08),
         transparent 30%
     );
     animation: rotate 4s linear infinite;
@@ -1044,8 +1047,8 @@ button {
 .form-input {
     flex: 1;
     padding: 1rem 1.5rem;
-    background: rgba(10, 10, 26, 0.8);
-    border: 2px solid rgba(0, 217, 255, 0.3);
+    background: rgba(15, 15, 26, 0.8);
+    border: 2px solid rgba(91, 154, 168, 0.25);
     border-radius: var(--radius-full);
     color: var(--color-text-primary);
     font-size: 1rem;
@@ -1055,7 +1058,7 @@ button {
 
 .form-input:focus {
     outline: none;
-    border-color: var(--color-primary);
+    border-color: rgba(91, 154, 168, 0.5);
     box-shadow: var(--shadow-glow);
 }
 
@@ -1132,8 +1135,8 @@ button {
    ============================================ */
 
 .footer {
-    background: rgba(10, 10, 26, 0.9);
-    border-top: 1px solid rgba(0, 217, 255, 0.2);
+    background: rgba(15, 15, 26, 0.9);
+    border-top: 1px solid rgba(91, 154, 168, 0.15);
     padding: var(--spacing-2xl) 0 var(--spacing-lg);
     margin-top: var(--spacing-3xl);
 }
@@ -1185,7 +1188,7 @@ button {
 .footer-bottom {
     text-align: center;
     padding-top: var(--spacing-lg);
-    border-top: 1px solid rgba(0, 217, 255, 0.1);
+    border-top: 1px solid rgba(91, 154, 168, 0.1);
     color: var(--color-text-muted);
 }
 

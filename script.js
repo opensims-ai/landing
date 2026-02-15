@@ -304,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Intermediate',
                 timeframe: '2-4 weeks',
                 reward: '5,000-20,000 OSC',
-                color: '#00d9ff',
+                color: '#5b9aa8',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-5 weeks',
                 reward: '7,000-25,000 OSC',
-                color: '#00ffaa',
+                color: '#7aa88b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-6 weeks',
                 reward: '10,000-35,000 OSC',
-                color: '#ffd700',
+                color: '#a89a7a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -346,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Intermediate',
                 timeframe: '2-4 weeks',
                 reward: '4,000-18,000 OSC',
-                color: '#00e5ff',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Intermediate',
                 timeframe: '3-5 weeks',
                 reward: '5,000-20,000 OSC',
-                color: '#00ccbb',
+                color: '#6b9a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '5-8 weeks',
                 reward: '15,000-45,000 OSC',
-                color: '#00bcd4',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-6 weeks',
                 reward: '12,000-40,000 OSC',
-                color: '#00aa99',
+                color: '#6b9a99',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -402,7 +402,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-6 weeks',
                 reward: '8,000-28,000 OSC',
-                color: '#26c6da',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
 
@@ -418,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-6 weeks',
                 reward: '8,000-30,000 OSC',
-                color: '#bd00ff',
+                color: '#8b7aa8',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -432,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Intermediate',
                 timeframe: '2-4 weeks',
                 reward: '6,000-22,000 OSC',
-                color: '#9d4edd',
+                color: '#8b7a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-5 weeks',
                 reward: '7,000-25,000 OSC',
-                color: '#a855f7',
+                color: '#8b7a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -460,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-7 weeks',
                 reward: '10,000-35,000 OSC',
-                color: '#c084fc',
+                color: '#8b7a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -474,7 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Intermediate',
                 timeframe: '2-4 weeks',
                 reward: '4,000-16,000 OSC',
-                color: '#8b5cf6',
+                color: '#8b7a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-5 weeks',
                 reward: '7,000-26,000 OSC',
-                color: '#7c3aed',
+                color: '#8b7a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
 
@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-8 weeks',
                 reward: '15,000-50,000 OSC',
-                color: '#ff006e',
+                color: '#a87b8b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-5 weeks',
                 reward: '9,000-28,000 OSC',
-                color: '#ff4d6d',
+                color: '#a87b8b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -532,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-6 weeks',
                 reward: '8,000-30,000 OSC',
-                color: '#f72585',
+                color: '#a87b8b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-7 weeks',
                 reward: '11,000-38,000 OSC',
-                color: '#ff1654',
+                color: '#a87b8b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -560,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '5-8 weeks',
                 reward: '13,000-42,000 OSC',
-                color: '#ff5277',
+                color: '#a87b8b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
 
@@ -576,7 +576,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Intermediate',
                 timeframe: '1-2 weeks',
                 reward: '4,000-15,000 OSC',
-                color: '#ff7b00',
+                color: '#a88b7a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -590,7 +590,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '2-3 weeks',
                 reward: '6,000-20,000 OSC',
-                color: '#ff9500',
+                color: '#a88b7a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-8 weeks',
                 reward: '12,000-40,000 OSC',
-                color: '#ff8800',
+                color: '#a88b7a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -618,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '1-3 weeks',
                 reward: '5,000-18,000 OSC',
-                color: '#ffa500',
+                color: '#a88b7a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '2-4 weeks',
                 reward: '8,000-28,000 OSC',
-                color: '#ffaa00',
+                color: '#a88b7a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
 
@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-7 weeks',
                 reward: '12,000-40,000 OSC',
-                color: '#06ffa5',
+                color: '#7aa88b',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -662,7 +662,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '3-5 weeks',
                 reward: '8,000-30,000 OSC',
-                color: '#00f5ff',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Advanced',
                 timeframe: '3-6 weeks',
                 reward: '9,000-32,000 OSC',
-                color: '#4ecdc4',
+                color: '#6b9a9a',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -690,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '5-9 weeks',
                 reward: '14,000-45,000 OSC',
-                color: '#3dd5f3',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -704,7 +704,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-7 weeks',
                 reward: '11,000-38,000 OSC',
-                color: '#22d3ee',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -718,7 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 difficulty: 'Expert',
                 timeframe: '4-8 weeks',
                 reward: '13,000-42,000 OSC',
-                color: '#06b6d4',
+                color: '#6b9aaa',
                 x: 0, y: 0, vx: 0, vy: 0
             }
         ];
@@ -865,7 +865,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 ctx.beginPath();
                 ctx.moveTo(env1.x, env1.y);
                 ctx.lineTo(env2.x, env2.y);
-                ctx.strokeStyle = `rgba(0, 217, 255, ${opacity})`;
+                ctx.strokeStyle = `rgba(91, 154, 168, ${opacity})`;
                 ctx.lineWidth = 1;
                 ctx.stroke();
 
@@ -877,7 +877,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     ctx.beginPath();
                     ctx.arc(px, py, 2, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(0, 217, 255, 0.6)';
+                    ctx.fillStyle = 'rgba(91, 154, 168, 0.4)';
                     ctx.fill();
                 }
             });
@@ -1090,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Console Easter Egg
     // ============================================
     console.log('%cWelcome to OpenSims.ai! 🌌', 'color: #00d9ff; font-size: 24px; font-weight: bold;');
-    console.log('%cInterested in building simulations? Join our creator program!', 'color: #bd00ff; font-size: 14px;');
+    console.log('%cInterested in building simulations? Join our creator program!', 'color: #8b7aa8; font-size: 14px;');
     console.log('%cEmail: hello@opensims.ai', 'color: #b8b8d4; font-size: 12px;');
 
     // ============================================
