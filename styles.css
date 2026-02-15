@@ -754,18 +754,18 @@ button {
 }
 
 .legend-small {
-    width: 12px;
-    height: 12px;
-}
-
-.legend-medium {
     width: 16px;
     height: 16px;
 }
 
+.legend-medium {
+    width: 24px;
+    height: 24px;
+}
+
 .legend-large {
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
 }
 
 .environments-grid {

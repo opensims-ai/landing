@@ -290,17 +290,17 @@ document.addEventListener('DOMContentLoaded', function() {
         let hoveredNode = null;
         let currentFilter = 'all';
 
-        // Environment data with clustering
+        // Environment data with clustering - Dense network with varied sizes
         const environments = [
-            // Business Cluster
+            // Business Cluster - 8 environments
             {
                 id: 1,
                 name: 'Startup Founder',
                 icon: '🚀',
                 category: 'business',
                 description: 'Build and scale a tech company from idea to Series A.',
-                actors: 156,
-                ageWeeks: 8,
+                actors: 342,
+                ageWeeks: 16,
                 difficulty: 'Intermediate',
                 timeframe: '2-4 weeks',
                 reward: '5,000-20,000 OSC',
@@ -313,12 +313,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon: '🏥',
                 category: 'business',
                 description: 'Optimize healthcare operations while maintaining quality care.',
-                actors: 98,
-                ageWeeks: 6,
+                actors: 189,
+                ageWeeks: 12,
                 difficulty: 'Advanced',
                 timeframe: '3-5 weeks',
                 reward: '7,000-25,000 OSC',
-                color: '#00ff88',
+                color: '#00ffaa',
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
@@ -327,23 +327,94 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon: '💼',
                 category: 'business',
                 description: 'Navigate high-stakes deals and market dynamics.',
-                actors: 72,
-                ageWeeks: 4,
+                actors: 267,
+                ageWeeks: 20,
                 difficulty: 'Expert',
                 timeframe: '4-6 weeks',
                 reward: '10,000-35,000 OSC',
                 color: '#ffd700',
                 x: 0, y: 0, vx: 0, vy: 0
             },
-            // Urban Cluster
             {
                 id: 4,
+                name: 'E-Commerce Manager',
+                icon: '🛒',
+                category: 'business',
+                description: 'Scale an online retail empire across multiple platforms.',
+                actors: 156,
+                ageWeeks: 8,
+                difficulty: 'Intermediate',
+                timeframe: '2-4 weeks',
+                reward: '4,000-18,000 OSC',
+                color: '#00e5ff',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 5,
+                name: 'Restaurant Chain Owner',
+                icon: '🍽️',
+                category: 'business',
+                description: 'Expand your culinary empire while maintaining quality.',
+                actors: 92,
+                ageWeeks: 5,
+                difficulty: 'Intermediate',
+                timeframe: '3-5 weeks',
+                reward: '5,000-20,000 OSC',
+                color: '#00ccbb',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 6,
+                name: 'Venture Capitalist',
+                icon: '💰',
+                category: 'business',
+                description: 'Identify and fund the next unicorn startups.',
+                actors: 423,
+                ageWeeks: 28,
+                difficulty: 'Expert',
+                timeframe: '5-8 weeks',
+                reward: '15,000-45,000 OSC',
+                color: '#00bcd4',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 7,
+                name: 'Pharmaceutical CEO',
+                icon: '💊',
+                category: 'business',
+                description: 'Lead drug development and navigate FDA approvals.',
+                actors: 34,
+                ageWeeks: 2,
+                difficulty: 'Expert',
+                timeframe: '4-6 weeks',
+                reward: '12,000-40,000 OSC',
+                color: '#00aa99',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 8,
+                name: 'Real Estate Developer',
+                icon: '🏢',
+                category: 'business',
+                description: 'Transform cityscapes with strategic property development.',
+                actors: 128,
+                ageWeeks: 7,
+                difficulty: 'Advanced',
+                timeframe: '3-6 weeks',
+                reward: '8,000-28,000 OSC',
+                color: '#26c6da',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+
+            // Urban Cluster - 6 environments
+            {
+                id: 9,
                 name: 'City Planner',
                 icon: '🏙️',
                 category: 'urban',
                 description: 'Design and manage a sustainable metropolis.',
-                actors: 134,
-                ageWeeks: 10,
+                actors: 512,
+                ageWeeks: 32,
                 difficulty: 'Advanced',
                 timeframe: '3-6 weeks',
                 reward: '8,000-30,000 OSC',
@@ -351,28 +422,85 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
-                id: 5,
+                id: 10,
                 name: 'Transportation Chief',
                 icon: '🚇',
                 category: 'urban',
                 description: 'Revolutionize urban mobility and infrastructure.',
-                actors: 67,
-                ageWeeks: 5,
+                actors: 178,
+                ageWeeks: 11,
                 difficulty: 'Intermediate',
                 timeframe: '2-4 weeks',
                 reward: '6,000-22,000 OSC',
                 color: '#9d4edd',
                 x: 0, y: 0, vx: 0, vy: 0
             },
-            // Space Cluster
             {
-                id: 6,
+                id: 11,
+                name: 'Urban Architect',
+                icon: '🏗️',
+                category: 'urban',
+                description: 'Design iconic buildings that define city skylines.',
+                actors: 67,
+                ageWeeks: 4,
+                difficulty: 'Advanced',
+                timeframe: '3-5 weeks',
+                reward: '7,000-25,000 OSC',
+                color: '#a855f7',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 12,
+                name: 'Smart City Director',
+                icon: '🌐',
+                category: 'urban',
+                description: 'Integrate IoT and AI into urban infrastructure.',
+                actors: 23,
+                ageWeeks: 1,
+                difficulty: 'Expert',
+                timeframe: '4-7 weeks',
+                reward: '10,000-35,000 OSC',
+                color: '#c084fc',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 13,
+                name: 'Parks Commissioner',
+                icon: '🌳',
+                category: 'urban',
+                description: 'Create green spaces and improve quality of life.',
+                actors: 145,
+                ageWeeks: 9,
+                difficulty: 'Intermediate',
+                timeframe: '2-4 weeks',
+                reward: '4,000-16,000 OSC',
+                color: '#8b5cf6',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 14,
+                name: 'Utilities Manager',
+                icon: '⚡',
+                category: 'urban',
+                description: 'Ensure reliable power, water, and waste management.',
+                actors: 234,
+                ageWeeks: 15,
+                difficulty: 'Advanced',
+                timeframe: '3-5 weeks',
+                reward: '7,000-26,000 OSC',
+                color: '#7c3aed',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+
+            // Space Cluster - 5 environments
+            {
+                id: 15,
                 name: 'Mars Colony Leader',
                 icon: '🪐',
                 category: 'space',
                 description: 'Establish humanity\'s first self-sustaining Martian settlement.',
-                actors: 203,
-                ageWeeks: 12,
+                actors: 678,
+                ageWeeks: 40,
                 difficulty: 'Expert',
                 timeframe: '4-8 weeks',
                 reward: '15,000-50,000 OSC',
@@ -380,28 +508,71 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
-                id: 7,
+                id: 16,
                 name: 'Space Station Commander',
                 icon: '🛸',
                 category: 'space',
                 description: 'Manage operations aboard an orbital research station.',
-                actors: 89,
-                ageWeeks: 7,
+                actors: 289,
+                ageWeeks: 18,
                 difficulty: 'Advanced',
                 timeframe: '3-5 weeks',
                 reward: '9,000-28,000 OSC',
                 color: '#ff4d6d',
                 x: 0, y: 0, vx: 0, vy: 0
             },
-            // Crisis Cluster
             {
-                id: 8,
+                id: 17,
+                name: 'Asteroid Miner',
+                icon: '⛏️',
+                category: 'space',
+                description: 'Extract valuable resources from asteroid belts.',
+                actors: 112,
+                ageWeeks: 6,
+                difficulty: 'Advanced',
+                timeframe: '3-6 weeks',
+                reward: '8,000-30,000 OSC',
+                color: '#f72585',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 18,
+                name: 'Lunar Base Commander',
+                icon: '🌙',
+                category: 'space',
+                description: 'Oversee Earth\'s gateway to deep space exploration.',
+                actors: 45,
+                ageWeeks: 3,
+                difficulty: 'Expert',
+                timeframe: '4-7 weeks',
+                reward: '11,000-38,000 OSC',
+                color: '#ff1654',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 19,
+                name: 'Interstellar Navigator',
+                icon: '🚀',
+                category: 'space',
+                description: 'Chart courses through unknown regions of space.',
+                actors: 156,
+                ageWeeks: 10,
+                difficulty: 'Expert',
+                timeframe: '5-8 weeks',
+                reward: '13,000-42,000 OSC',
+                color: '#ff5277',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+
+            // Crisis Cluster - 5 environments
+            {
+                id: 20,
                 name: 'Crisis Manager',
                 icon: '🚨',
                 category: 'crisis',
                 description: 'Handle emergency response scenarios in real-time.',
-                actors: 112,
-                ageWeeks: 6,
+                actors: 398,
+                ageWeeks: 22,
                 difficulty: 'Intermediate',
                 timeframe: '1-2 weeks',
                 reward: '4,000-15,000 OSC',
@@ -409,28 +580,71 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
-                id: 9,
+                id: 21,
                 name: 'Disaster Coordinator',
                 icon: '⚡',
                 category: 'crisis',
                 description: 'Coordinate large-scale disaster relief efforts.',
-                actors: 78,
-                ageWeeks: 5,
+                actors: 223,
+                ageWeeks: 14,
                 difficulty: 'Advanced',
                 timeframe: '2-3 weeks',
                 reward: '6,000-20,000 OSC',
                 color: '#ff9500',
                 x: 0, y: 0, vx: 0, vy: 0
             },
-            // Research Cluster
             {
-                id: 10,
+                id: 22,
+                name: 'Pandemic Response Lead',
+                icon: '🦠',
+                category: 'crisis',
+                description: 'Contain outbreaks and coordinate global health response.',
+                actors: 567,
+                ageWeeks: 36,
+                difficulty: 'Expert',
+                timeframe: '4-8 weeks',
+                reward: '12,000-40,000 OSC',
+                color: '#ff8800',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 23,
+                name: 'Wildfire Chief',
+                icon: '🔥',
+                category: 'crisis',
+                description: 'Battle massive wildfires and protect communities.',
+                actors: 87,
+                ageWeeks: 5,
+                difficulty: 'Advanced',
+                timeframe: '1-3 weeks',
+                reward: '5,000-18,000 OSC',
+                color: '#ffa500',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 24,
+                name: 'Cybersecurity Commander',
+                icon: '🛡️',
+                category: 'crisis',
+                description: 'Defend against large-scale cyber attacks.',
+                actors: 18,
+                ageWeeks: 0.5,
+                difficulty: 'Expert',
+                timeframe: '2-4 weeks',
+                reward: '8,000-28,000 OSC',
+                color: '#ffaa00',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+
+            // Research Cluster - 6 environments
+            {
+                id: 25,
                 name: 'Research Director',
                 icon: '🔬',
                 category: 'research',
                 description: 'Lead groundbreaking scientific research projects.',
-                actors: 95,
-                ageWeeks: 9,
+                actors: 301,
+                ageWeeks: 19,
                 difficulty: 'Expert',
                 timeframe: '4-7 weeks',
                 reward: '12,000-40,000 OSC',
@@ -438,13 +652,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
-                id: 11,
+                id: 26,
                 name: 'AI Ethics Board Member',
                 icon: '🤖',
                 category: 'research',
                 description: 'Navigate complex ethical decisions in AI development.',
-                actors: 58,
-                ageWeeks: 3,
+                actors: 134,
+                ageWeeks: 8,
                 difficulty: 'Expert',
                 timeframe: '3-5 weeks',
                 reward: '8,000-30,000 OSC',
@@ -452,29 +666,78 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: 0, y: 0, vx: 0, vy: 0
             },
             {
-                id: 12,
+                id: 27,
                 name: 'Diplomatic Envoy',
                 icon: '🤝',
                 category: 'research',
                 description: 'Navigate international relations and treaty negotiations.',
-                actors: 81,
-                ageWeeks: 6,
+                actors: 245,
+                ageWeeks: 15,
                 difficulty: 'Advanced',
                 timeframe: '3-6 weeks',
                 reward: '9,000-32,000 OSC',
                 color: '#4ecdc4',
                 x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 28,
+                name: 'Quantum Computing Lead',
+                icon: '⚛️',
+                category: 'research',
+                description: 'Pioneer the next generation of computing technology.',
+                actors: 67,
+                ageWeeks: 4,
+                difficulty: 'Expert',
+                timeframe: '5-9 weeks',
+                reward: '14,000-45,000 OSC',
+                color: '#3dd5f3',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 29,
+                name: 'Climate Scientist',
+                icon: '🌍',
+                category: 'research',
+                description: 'Model climate change and develop mitigation strategies.',
+                actors: 412,
+                ageWeeks: 26,
+                difficulty: 'Expert',
+                timeframe: '4-7 weeks',
+                reward: '11,000-38,000 OSC',
+                color: '#22d3ee',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 30,
+                name: 'Biotech Pioneer',
+                icon: '🧬',
+                category: 'research',
+                description: 'Push the boundaries of genetic engineering and medicine.',
+                actors: 189,
+                ageWeeks: 12,
+                difficulty: 'Expert',
+                timeframe: '4-8 weeks',
+                reward: '13,000-42,000 OSC',
+                color: '#06b6d4',
+                x: 0, y: 0, vx: 0, vy: 0
             }
         ];
 
-        // Define connections between related environments
+        // Define connections between related environments (denser network)
         const connections = [
-            [1, 2], [1, 3], [2, 3], // Business cluster
-            [4, 5], // Urban cluster
-            [6, 7], // Space cluster
-            [8, 9], // Crisis cluster
-            [10, 11], [10, 12], [11, 12], // Research cluster
-            [1, 4], [2, 8], [4, 6], [10, 6], [9, 8] // Inter-cluster connections
+            // Business cluster internal
+            [1, 2], [1, 3], [1, 4], [2, 3], [2, 7], [3, 6], [4, 5], [5, 8], [6, 3], [7, 2], [8, 1],
+            // Urban cluster internal
+            [9, 10], [9, 11], [9, 13], [10, 14], [11, 13], [12, 9], [13, 14], [14, 10],
+            // Space cluster internal
+            [15, 16], [15, 17], [16, 18], [16, 19], [17, 18], [18, 19], [19, 15],
+            // Crisis cluster internal
+            [20, 21], [20, 22], [21, 23], [22, 24], [23, 20], [24, 22],
+            // Research cluster internal
+            [25, 26], [25, 27], [25, 29], [26, 28], [27, 29], [28, 30], [29, 30], [30, 25],
+            // Inter-cluster connections (related domains)
+            [1, 9], [2, 22], [3, 6], [7, 25], [8, 9], [9, 15], [10, 15], [12, 26], [14, 29],
+            [16, 25], [17, 3], [18, 25], [20, 21], [22, 25], [24, 26], [26, 28], [27, 9], [29, 9]
         ];
 
         // Resize canvas
@@ -486,18 +749,18 @@ document.addEventListener('DOMContentLoaded', function() {
             initializePositions();
         }
 
-        // Initialize node positions with clustering
+        // Initialize node positions with clustering (denser layout)
         function initializePositions() {
             const centerX = canvas.width / 2;
             const centerY = canvas.height / 2;
-            const clusterRadius = Math.min(canvas.width, canvas.height) * 0.35;
+            const clusterRadius = Math.min(canvas.width, canvas.height) * 0.32;
 
             const categories = {
                 business: { angle: 0, count: 0 },
-                urban: { angle: Math.PI / 3, count: 0 },
-                space: { angle: (2 * Math.PI) / 3, count: 0 },
-                crisis: { angle: Math.PI, count: 0 },
-                research: { angle: (4 * Math.PI) / 3, count: 0 }
+                urban: { angle: (2 * Math.PI) / 5, count: 0 },
+                space: { angle: (4 * Math.PI) / 5, count: 0 },
+                crisis: { angle: (6 * Math.PI) / 5, count: 0 },
+                research: { angle: (8 * Math.PI) / 5, count: 0 }
             };
 
             // Count environments per category
@@ -505,7 +768,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 categories[env.category].count++;
             });
 
-            // Position nodes in clusters
+            // Position nodes in clusters with tighter packing
             const categoryOffsets = {};
             Object.keys(categories).forEach(cat => {
                 categoryOffsets[cat] = 0;
@@ -514,24 +777,38 @@ document.addEventListener('DOMContentLoaded', function() {
             environments.forEach(env => {
                 const catInfo = categories[env.category];
                 const offset = categoryOffsets[env.category];
-                const angleOffset = (offset - (catInfo.count - 1) / 2) * 0.3;
-                const angle = catInfo.angle + angleOffset;
-                const distance = clusterRadius + (Math.random() - 0.5) * 50;
 
-                env.x = centerX + Math.cos(angle) * distance;
-                env.y = centerY + Math.sin(angle) * distance;
-                env.vx = (Math.random() - 0.5) * 0.3;
-                env.vy = (Math.random() - 0.5) * 0.3;
+                // Create spiral pattern within each cluster for density
+                const spiralRadius = (offset / catInfo.count) * 80 + 40;
+                const spiralAngle = offset * 0.8 + (Math.random() - 0.5) * 0.4;
+
+                const clusterX = Math.cos(catInfo.angle) * clusterRadius;
+                const clusterY = Math.sin(catInfo.angle) * clusterRadius;
+
+                const localX = Math.cos(spiralAngle) * spiralRadius;
+                const localY = Math.sin(spiralAngle) * spiralRadius;
+
+                env.x = centerX + clusterX + localX;
+                env.y = centerY + clusterY + localY;
+                env.vx = (Math.random() - 0.5) * 0.25;
+                env.vy = (Math.random() - 0.5) * 0.25;
 
                 categoryOffsets[env.category]++;
             });
         }
 
-        // Calculate node size based on actors and age
+        // Calculate node size based on actors and age (dramatic variance)
         function getNodeSize(env) {
-            const actorFactor = Math.log(env.actors + 1) * 3;
-            const ageFactor = Math.sqrt(env.ageWeeks) * 2;
-            return Math.max(20, Math.min(50, actorFactor + ageFactor));
+            // More dramatic exponential scaling
+            // Actor contribution: 0-50 points (heavily weighted)
+            const actorFactor = Math.pow(env.actors / 10, 0.7);
+
+            // Age contribution: 0-25 points (grows with maturity)
+            const ageFactor = Math.pow(env.ageWeeks, 0.85) * 1.5;
+
+            // Combined size with much wider range: 15px to 90px
+            const baseSize = actorFactor + ageFactor;
+            return Math.max(15, Math.min(90, baseSize));
         }
 
         // Update node positions with gentle floating
