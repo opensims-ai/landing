@@ -274,6 +274,510 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ============================================
+    // ============================================
+    // Network Visualization for Environments
+    // ============================================
+    const canvas = document.getElementById('environmentNetwork');
+    const tooltip = document.getElementById('networkTooltip');
+
+    if (canvas && tooltip) {
+        const ctx = canvas.getContext('2d');
+        let animationId;
+        let hoveredNode = null;
+        let currentFilter = 'all';
+
+        // Environment data with clustering
+        const environments = [
+            // Business Cluster
+            {
+                id: 1,
+                name: 'Startup Founder',
+                icon: '🚀',
+                category: 'business',
+                description: 'Build and scale a tech company from idea to Series A.',
+                actors: 156,
+                ageWeeks: 8,
+                difficulty: 'Intermediate',
+                timeframe: '2-4 weeks',
+                reward: '5,000-20,000 OSC',
+                color: '#00d9ff',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 2,
+                name: 'Hospital Administrator',
+                icon: '🏥',
+                category: 'business',
+                description: 'Optimize healthcare operations while maintaining quality care.',
+                actors: 98,
+                ageWeeks: 6,
+                difficulty: 'Advanced',
+                timeframe: '3-5 weeks',
+                reward: '7,000-25,000 OSC',
+                color: '#00ff88',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 3,
+                name: 'Investment Banker',
+                icon: '💼',
+                category: 'business',
+                description: 'Navigate high-stakes deals and market dynamics.',
+                actors: 72,
+                ageWeeks: 4,
+                difficulty: 'Expert',
+                timeframe: '4-6 weeks',
+                reward: '10,000-35,000 OSC',
+                color: '#ffd700',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            // Urban Cluster
+            {
+                id: 4,
+                name: 'City Planner',
+                icon: '🏙️',
+                category: 'urban',
+                description: 'Design and manage a sustainable metropolis.',
+                actors: 134,
+                ageWeeks: 10,
+                difficulty: 'Advanced',
+                timeframe: '3-6 weeks',
+                reward: '8,000-30,000 OSC',
+                color: '#bd00ff',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 5,
+                name: 'Transportation Chief',
+                icon: '🚇',
+                category: 'urban',
+                description: 'Revolutionize urban mobility and infrastructure.',
+                actors: 67,
+                ageWeeks: 5,
+                difficulty: 'Intermediate',
+                timeframe: '2-4 weeks',
+                reward: '6,000-22,000 OSC',
+                color: '#9d4edd',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            // Space Cluster
+            {
+                id: 6,
+                name: 'Mars Colony Leader',
+                icon: '🪐',
+                category: 'space',
+                description: 'Establish humanity\'s first self-sustaining Martian settlement.',
+                actors: 203,
+                ageWeeks: 12,
+                difficulty: 'Expert',
+                timeframe: '4-8 weeks',
+                reward: '15,000-50,000 OSC',
+                color: '#ff006e',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 7,
+                name: 'Space Station Commander',
+                icon: '🛸',
+                category: 'space',
+                description: 'Manage operations aboard an orbital research station.',
+                actors: 89,
+                ageWeeks: 7,
+                difficulty: 'Advanced',
+                timeframe: '3-5 weeks',
+                reward: '9,000-28,000 OSC',
+                color: '#ff4d6d',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            // Crisis Cluster
+            {
+                id: 8,
+                name: 'Crisis Manager',
+                icon: '🚨',
+                category: 'crisis',
+                description: 'Handle emergency response scenarios in real-time.',
+                actors: 112,
+                ageWeeks: 6,
+                difficulty: 'Intermediate',
+                timeframe: '1-2 weeks',
+                reward: '4,000-15,000 OSC',
+                color: '#ff7b00',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 9,
+                name: 'Disaster Coordinator',
+                icon: '⚡',
+                category: 'crisis',
+                description: 'Coordinate large-scale disaster relief efforts.',
+                actors: 78,
+                ageWeeks: 5,
+                difficulty: 'Advanced',
+                timeframe: '2-3 weeks',
+                reward: '6,000-20,000 OSC',
+                color: '#ff9500',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            // Research Cluster
+            {
+                id: 10,
+                name: 'Research Director',
+                icon: '🔬',
+                category: 'research',
+                description: 'Lead groundbreaking scientific research projects.',
+                actors: 95,
+                ageWeeks: 9,
+                difficulty: 'Expert',
+                timeframe: '4-7 weeks',
+                reward: '12,000-40,000 OSC',
+                color: '#06ffa5',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 11,
+                name: 'AI Ethics Board Member',
+                icon: '🤖',
+                category: 'research',
+                description: 'Navigate complex ethical decisions in AI development.',
+                actors: 58,
+                ageWeeks: 3,
+                difficulty: 'Expert',
+                timeframe: '3-5 weeks',
+                reward: '8,000-30,000 OSC',
+                color: '#00f5ff',
+                x: 0, y: 0, vx: 0, vy: 0
+            },
+            {
+                id: 12,
+                name: 'Diplomatic Envoy',
+                icon: '🤝',
+                category: 'research',
+                description: 'Navigate international relations and treaty negotiations.',
+                actors: 81,
+                ageWeeks: 6,
+                difficulty: 'Advanced',
+                timeframe: '3-6 weeks',
+                reward: '9,000-32,000 OSC',
+                color: '#4ecdc4',
+                x: 0, y: 0, vx: 0, vy: 0
+            }
+        ];
+
+        // Define connections between related environments
+        const connections = [
+            [1, 2], [1, 3], [2, 3], // Business cluster
+            [4, 5], // Urban cluster
+            [6, 7], // Space cluster
+            [8, 9], // Crisis cluster
+            [10, 11], [10, 12], [11, 12], // Research cluster
+            [1, 4], [2, 8], [4, 6], [10, 6], [9, 8] // Inter-cluster connections
+        ];
+
+        // Resize canvas
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            initializePositions();
+        }
+
+        // Initialize node positions with clustering
+        function initializePositions() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const clusterRadius = Math.min(canvas.width, canvas.height) * 0.35;
+
+            const categories = {
+                business: { angle: 0, count: 0 },
+                urban: { angle: Math.PI / 3, count: 0 },
+                space: { angle: (2 * Math.PI) / 3, count: 0 },
+                crisis: { angle: Math.PI, count: 0 },
+                research: { angle: (4 * Math.PI) / 3, count: 0 }
+            };
+
+            // Count environments per category
+            environments.forEach(env => {
+                categories[env.category].count++;
+            });
+
+            // Position nodes in clusters
+            const categoryOffsets = {};
+            Object.keys(categories).forEach(cat => {
+                categoryOffsets[cat] = 0;
+            });
+
+            environments.forEach(env => {
+                const catInfo = categories[env.category];
+                const offset = categoryOffsets[env.category];
+                const angleOffset = (offset - (catInfo.count - 1) / 2) * 0.3;
+                const angle = catInfo.angle + angleOffset;
+                const distance = clusterRadius + (Math.random() - 0.5) * 50;
+
+                env.x = centerX + Math.cos(angle) * distance;
+                env.y = centerY + Math.sin(angle) * distance;
+                env.vx = (Math.random() - 0.5) * 0.3;
+                env.vy = (Math.random() - 0.5) * 0.3;
+
+                categoryOffsets[env.category]++;
+            });
+        }
+
+        // Calculate node size based on actors and age
+        function getNodeSize(env) {
+            const actorFactor = Math.log(env.actors + 1) * 3;
+            const ageFactor = Math.sqrt(env.ageWeeks) * 2;
+            return Math.max(20, Math.min(50, actorFactor + ageFactor));
+        }
+
+        // Update node positions with gentle floating
+        function updatePositions() {
+            environments.forEach(env => {
+                // Apply velocity
+                env.x += env.vx;
+                env.y += env.vy;
+
+                // Gentle random movement
+                env.vx += (Math.random() - 0.5) * 0.05;
+                env.vy += (Math.random() - 0.5) * 0.05;
+
+                // Damping
+                env.vx *= 0.98;
+                env.vy *= 0.98;
+
+                // Boundary collision with soft bounce
+                const margin = 80;
+                if (env.x < margin || env.x > canvas.width - margin) {
+                    env.vx *= -0.5;
+                    env.x = Math.max(margin, Math.min(canvas.width - margin, env.x));
+                }
+                if (env.y < margin || env.y > canvas.height - margin) {
+                    env.vy *= -0.5;
+                    env.y = Math.max(margin, Math.min(canvas.height - margin, env.y));
+                }
+
+                // Gentle pull toward center
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const dx = centerX - env.x;
+                const dy = centerY - env.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist > 200) {
+                    env.vx += (dx / dist) * 0.02;
+                    env.vy += (dy / dist) * 0.02;
+                }
+            });
+        }
+
+        // Draw connections between nodes
+        function drawConnections() {
+            connections.forEach(([id1, id2]) => {
+                const env1 = environments.find(e => e.id === id1);
+                const env2 = environments.find(e => e.id === id2);
+
+                if (!env1 || !env2) return;
+                if (currentFilter !== 'all' && env1.category !== currentFilter && env2.category !== currentFilter) return;
+
+                const distance = Math.sqrt(Math.pow(env1.x - env2.x, 2) + Math.pow(env1.y - env2.y, 2));
+                const opacity = Math.max(0, 1 - distance / 400) * 0.15;
+
+                ctx.beginPath();
+                ctx.moveTo(env1.x, env1.y);
+                ctx.lineTo(env2.x, env2.y);
+                ctx.strokeStyle = `rgba(0, 217, 255, ${opacity})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Animated particles along connections
+                if (Math.random() > 0.98) {
+                    const t = Math.random();
+                    const px = env1.x + (env2.x - env1.x) * t;
+                    const py = env1.y + (env2.y - env1.y) * t;
+
+                    ctx.beginPath();
+                    ctx.arc(px, py, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(0, 217, 255, 0.6)';
+                    ctx.fill();
+                }
+            });
+        }
+
+        // Draw nodes
+        function drawNodes() {
+            const time = Date.now() / 1000;
+
+            environments.forEach(env => {
+                if (currentFilter !== 'all' && env.category !== currentFilter) {
+                    return;
+                }
+
+                const size = getNodeSize(env);
+                const isHovered = hoveredNode === env;
+                const pulseSize = size + Math.sin(time * 2 + env.id) * 2;
+
+                // Outer glow
+                const gradient = ctx.createRadialGradient(env.x, env.y, 0, env.x, env.y, pulseSize + 10);
+                gradient.addColorStop(0, env.color + '40');
+                gradient.addColorStop(0.5, env.color + '20');
+                gradient.addColorStop(1, env.color + '00');
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(env.x, env.y, pulseSize + 10, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Node circle
+                ctx.beginPath();
+                ctx.arc(env.x, env.y, isHovered ? size * 1.2 : pulseSize, 0, Math.PI * 2);
+                ctx.fillStyle = isHovered ? env.color : env.color + 'cc';
+                ctx.fill();
+
+                // Border
+                ctx.strokeStyle = isHovered ? '#ffffff' : env.color;
+                ctx.lineWidth = isHovered ? 3 : 2;
+                ctx.stroke();
+
+                // Icon
+                ctx.font = `${size * 0.8}px Arial`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText(env.icon, env.x, env.y);
+
+                // Actor count indicator (small badge)
+                if (!isHovered && size > 30) {
+                    ctx.font = '10px Arial';
+                    ctx.fillStyle = '#000000';
+                    ctx.beginPath();
+                    ctx.arc(env.x + size * 0.6, env.y - size * 0.6, 12, 0, Math.PI * 2);
+                    ctx.fillStyle = '#00d9ff';
+                    ctx.fill();
+                    ctx.fillStyle = '#000000';
+                    ctx.fillText(env.actors, env.x + size * 0.6, env.y - size * 0.6);
+                }
+            });
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            updatePositions();
+            drawConnections();
+            drawNodes();
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Mouse movement for hover detection
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            let found = null;
+            environments.forEach(env => {
+                if (currentFilter !== 'all' && env.category !== currentFilter) return;
+
+                const size = getNodeSize(env);
+                const distance = Math.sqrt(Math.pow(mouseX - env.x, 2) + Math.pow(mouseY - env.y, 2));
+                if (distance < size) {
+                    found = env;
+                }
+            });
+
+            if (found !== hoveredNode) {
+                hoveredNode = found;
+                if (hoveredNode) {
+                    showTooltip(hoveredNode, e.clientX, e.clientY);
+                } else {
+                    hideTooltip();
+                }
+            } else if (hoveredNode) {
+                updateTooltipPosition(e.clientX, e.clientY);
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            hoveredNode = null;
+            hideTooltip();
+        });
+
+        // Show tooltip
+        function showTooltip(env, x, y) {
+            tooltip.innerHTML = `
+                <div class="tooltip-category">${env.category}</div>
+                <div class="tooltip-header">
+                    <span class="tooltip-icon">${env.icon}</span>
+                    <h3 class="tooltip-title">${env.name}</h3>
+                </div>
+                <p class="tooltip-description">${env.description}</p>
+                <div class="tooltip-stats">
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Active Actors</span>
+                        <span class="tooltip-stat-value">${env.actors}</span>
+                    </div>
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Age</span>
+                        <span class="tooltip-stat-value">${env.ageWeeks} weeks</span>
+                    </div>
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Difficulty</span>
+                        <span class="tooltip-stat-value">${env.difficulty}</span>
+                    </div>
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Duration</span>
+                        <span class="tooltip-stat-value">${env.timeframe}</span>
+                    </div>
+                </div>
+                <div class="tooltip-reward">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M10 6V14M7 9H12C12.5523 9 13 9.44772 13 10C13 10.5523 12.5523 11 12 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H13" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>${env.reward}</span>
+                </div>
+            `;
+            updateTooltipPosition(x, y);
+            tooltip.classList.add('visible');
+        }
+
+        // Update tooltip position
+        function updateTooltipPosition(x, y) {
+            tooltip.style.left = x + 'px';
+            tooltip.style.top = (y - 20) + 'px';
+        }
+
+        // Hide tooltip
+        function hideTooltip() {
+            tooltip.classList.remove('visible');
+        }
+
+        // Filter buttons
+        const filterButtons = document.querySelectorAll('.network-filter');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.dataset.category;
+                hoveredNode = null;
+                hideTooltip();
+            });
+        });
+
+        // Initialize
+        resizeCanvas();
+        animate();
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+    }
+
+    // ============================================
     // Console Easter Egg
     // ============================================
     console.log('%cWelcome to OpenSims.ai! 🌌', 'color: #00d9ff; font-size: 24px; font-weight: bold;');

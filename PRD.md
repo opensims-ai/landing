@@ -134,8 +134,8 @@ Each environment contains:
 ### 4. OSCoin Economy
 
 #### 4.1 Earning OSCoins
-- **Objective Completion**: 50-5,000 OSCoins based on difficulty
-- **One-Time Quests**: 100-10,000 OSCoins for unique achievements per environment
+- **Objective Completion**: 5,000-50,000 OSCoins based on difficulty
+- **One-Time Quests**: 10,000-100,000 OSCoins for unique achievements per environment
 - **Decision Quality Bonuses**: 10-500% multipliers for exceptional decisions
 - **Daily Streaks**: Bonus multipliers for consistent participation
 - **Referral Rewards**: 10% of referred users' first-year earnings
@@ -176,7 +176,7 @@ Each environment has unique quests:
 - **Opt-In Only**: Users choose which simulations can request data
 - **Data Types Clearly Labeled**: Specify exactly what data is needed and why
 - **Privacy Protection**: All PII is anonymized before use
-- **Compensation**: Bonus OSCoins for valuable data contributions (50-500 per submission)
+- **Compensation**: Bonus OSCoins for valuable data contributions (500-5,000 per submission)
 - **Verification**: Data is validated before integration into simulations
 
 #### 5.3 Use Cases
@@ -223,7 +223,7 @@ Each environment has unique quests:
 ### New User Onboarding
 1. **Sign-Up**: Email/Google/GitHub authentication
 2. **Welcome Survey**: Interests, experience level, time availability
-3. **Tutorial**: Complete 5-minute guided simulation (earn first 100 OSCoins)
+3. **Tutorial**: Complete 5-minute guided simulation (earn first 1,000 OSCoins)
 4. **First Simulation**: Matched with beginner-friendly environment
 5. **First Decision**: Make first human-in-the-loop decision
 6. **Quest Unlock**: Discover quest system
@@ -299,8 +299,8 @@ Each environment has unique quests:
 
 ### Economic Metrics
 - **OSCoin Redemption Rate**: 40-60% (healthy balance)
-- **Average Earnings per User**: $15-50/month for active users
-- **Creator Earnings**: Top 10% earn $200+/month
+- **Average Earnings per User**: $2,000-3,000/month for active daily contributors ($500-750/week)
+- **Creator Earnings**: Top 10% earn $10,000+/month
 - **Revenue per User**: $2-5/month (blended average)
 
 ### Platform Growth

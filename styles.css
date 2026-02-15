@@ -30,7 +30,7 @@
 
     /* Typography */
     --font-primary: 'Exo 2', sans-serif;
-    --font-heading: 'Orbitron', sans-serif;
+    --font-heading: 'Rajdhani', sans-serif;
 
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -41,11 +41,11 @@
     --spacing-2xl: 4rem;
     --spacing-3xl: 6rem;
 
-    /* Border Radius */
-    --radius-sm: 0.5rem;
-    --radius-md: 1rem;
-    --radius-lg: 1.5rem;
-    --radius-full: 9999px;
+    /* Border Radius - Minimal curvature */
+    --radius-sm: 2px;
+    --radius-md: 2px;
+    --radius-lg: 2px;
+    --radius-full: 2px;
 
     /* Shadows */
     --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
@@ -74,6 +74,17 @@ body {
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Text Selection Styling */
+::selection {
+    background: rgba(0, 217, 255, 0.3);
+    color: var(--color-text-primary);
+}
+
+::-moz-selection {
+    background: rgba(0, 217, 255, 0.3);
+    color: var(--color-text-primary);
 }
 
 a {
@@ -555,8 +566,205 @@ button {
 }
 
 /* ============================================
-   Environments Showcase
+   Environments Showcase - Network Visualization
    ============================================ */
+
+.network-controls {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.network-filter {
+    padding: 0.5rem 1.5rem;
+    background: rgba(18, 18, 31, 0.6);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-family: var(--font-primary);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.network-filter:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: rgba(0, 217, 255, 0.1);
+}
+
+.network-filter.active {
+    background: var(--gradient-primary);
+    border-color: var(--color-primary);
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-glow);
+}
+
+.network-container {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    background: rgba(18, 18, 31, 0.4);
+    border: 1px solid rgba(0, 217, 255, 0.2);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: var(--spacing-xl);
+}
+
+#environmentNetwork {
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+}
+
+#environmentNetwork:active {
+    cursor: grabbing;
+}
+
+.network-tooltip {
+    position: absolute;
+    background: rgba(10, 10, 26, 0.95);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-md);
+    min-width: 280px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -100%) translateY(-20px);
+    transition: opacity var(--transition-base);
+    z-index: 1000;
+    box-shadow: var(--shadow-glow);
+    backdrop-filter: blur(10px);
+}
+
+.network-tooltip.visible {
+    opacity: 1;
+}
+
+.tooltip-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.tooltip-icon {
+    font-size: 2rem;
+}
+
+.tooltip-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: var(--color-text-primary);
+}
+
+.tooltip-category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: rgba(0, 217, 255, 0.2);
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: var(--color-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tooltip-description {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-sm);
+}
+
+.tooltip-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.tooltip-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.tooltip-stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tooltip-stat-value {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+.tooltip-reward {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid var(--color-success);
+    border-radius: var(--radius-sm);
+    margin-top: var(--spacing-sm);
+}
+
+.tooltip-reward svg {
+    color: var(--color-success);
+}
+
+.tooltip-reward span {
+    color: var(--color-success);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.network-legend {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+}
+
+.legend-indicator {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.legend-small {
+    width: 12px;
+    height: 12px;
+}
+
+.legend-medium {
+    width: 16px;
+    height: 16px;
+}
+
+.legend-large {
+    width: 20px;
+    height: 20px;
+}
 
 .environments-grid {
     display: grid;
@@ -1086,6 +1294,25 @@ button {
 
     .waitlist-stat {
         justify-content: center;
+    }
+
+    .network-container {
+        height: 500px;
+    }
+
+    .network-tooltip {
+        min-width: 240px;
+        padding: var(--spacing-sm);
+        font-size: 0.875rem;
+    }
+
+    .tooltip-title {
+        font-size: 1rem;
+    }
+
+    .network-filter {
+        font-size: 0.75rem;
+        padding: 0.4rem 1rem;
     }
 }
 
