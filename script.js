@@ -735,417 +735,232 @@ const environments = [
         x: 0, y: 0, vx: 0, vy: 0
     }
 ];
-        // Define connections between related environments
-        const connections = [
-            // Finance cluster internal
-            [1, 2], [1, 3], [2, 3], [3, 4], [1, 4],
-            // Trading cluster internal
-            [5, 6], [5, 7], [6, 7], [7, 8], [5, 8],
-            // Assistant cluster internal
-            [9, 10], [10, 11], [9, 11],
-            // Development cluster internal
-            [12, 13], [12, 14], [13, 14], [14, 15], [15, 16], [12, 16],
-            // Accounting cluster internal
-            [17, 18], [18, 19], [17, 19],
-            // Legal cluster internal
-            [20, 21], [21, 22], [22, 23], [20, 23],
-            // Operations cluster internal
-            [24, 25], [25, 26], [26, 27], [24, 27],
-            // Strategy cluster internal
-            [28, 29], [29, 30], [28, 30],
-            // Inter-cluster connections (related domains)
-            [1, 5], [1, 7], [2, 17], [3, 22], [4, 18], [5, 28], [6, 29], [7, 1],
-            [9, 24], [10, 29], [11, 28], [12, 14], [13, 24], [14, 27], [16, 29],
-            [17, 3], [18, 1], [19, 22], [20, 22], [21, 28], [22, 19], [23, 9],
-            [24, 29], [25, 24], [26, 27], [27, 30], [28, 1], [29, 7], [30, 29]
-        ];
 
-        // Resize canvas with high DPI support
-        function resizeCanvas() {
-            const container = canvas.parentElement;
-            const dpr = window.devicePixelRatio || 1;
+        // ============================================
+        // D3.js Network Visualization
+        // ============================================
+// D3.js Network Visualization for Environments
+const svg = d3.select('#environmentNetwork');
+const tooltip = document.getElementById('networkTooltip');
+let currentFilter = 'all';
 
-            // Set display size
-            canvas.style.width = container.clientWidth + 'px';
-            canvas.style.height = container.clientHeight + 'px';
+// Get container dimensions
+const container = svg.node().parentElement;
+const width = container.clientWidth;
+const height = container.clientHeight;
 
-            // Set actual canvas size for high DPI
-            canvas.width = container.clientWidth * dpr;
-            canvas.height = container.clientHeight * dpr;
+svg.attr('width', width).attr('height', height);
 
-            // Scale context for high DPI
-            ctx.scale(dpr, dpr);
+// Create groups for layers
+const g = svg.append('g');
+const linkGroup = g.append('g').attr('class', 'links');
+const nodeGroup = g.append('g').attr('class', 'nodes');
 
-            // Enable image smoothing for better quality
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
+// Enable zoom
+const zoom = d3.zoom()
+    .scaleExtent([0.5, 3])
+    .on('zoom', (event) => {
+        g.attr('transform', event.transform);
+    });
 
-            console.log('Canvas resized to:', container.clientWidth, 'x', container.clientHeight, 'DPR:', dpr);
-            initializePositions();
-        }
+svg.call(zoom);
 
-        // Initialize node positions with clustering (spread out layout)
-        function initializePositions() {
-            const displayWidth = canvas.clientWidth || canvas.width;
-            const displayHeight = canvas.clientHeight || canvas.height;
-            const centerX = displayWidth / 2;
-            const centerY = displayHeight / 2;
-            const clusterRadius = Math.min(displayWidth, displayHeight) * 0.38;
+// Prepare data
+const nodes = environments.map(d => ({...d}));
+const links = connections.map(([source, target]) => ({
+    source: source - 1,  // D3 uses 0-based indexing
+    target: target - 1
+}));
 
-            const categories = {
-                finance: { angle: 0, count: 0 },
-                trading: { angle: Math.PI / 4, count: 0 },
-                assistant: { angle: Math.PI / 2, count: 0 },
-                development: { angle: (3 * Math.PI) / 4, count: 0 },
-                accounting: { angle: Math.PI, count: 0 },
-                legal: { angle: (5 * Math.PI) / 4, count: 0 },
-                operations: { angle: (3 * Math.PI) / 2, count: 0 },
-                strategy: { angle: (7 * Math.PI) / 4, count: 0 }
-            };
+// Create force simulation
+const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links)
+        .id(d => d.id - 1)
+        .distance(80))
+    .force('charge', d3.forceManyBody().strength(-300))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collision', d3.forceCollide().radius(d => getNodeSize(d) + 5));
 
-            // Count environments per category
-            environments.forEach(env => {
-                categories[env.category].count++;
-            });
+// Draw links
+const link = linkGroup.selectAll('line')
+    .data(links)
+    .join('line')
+    .attr('stroke', 'rgba(91, 154, 168, 0.2)')
+    .attr('stroke-width', 1);
 
-            // Position nodes in clusters with tighter packing
-            const categoryOffsets = {};
-            Object.keys(categories).forEach(cat => {
-                categoryOffsets[cat] = 0;
-            });
+// Draw nodes
+const node = nodeGroup.selectAll('g')
+    .data(nodes)
+    .join('g')
+    .attr('class', 'node')
+    .call(d3.drag()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended));
 
-            environments.forEach(env => {
-                const catInfo = categories[env.category];
-                const offset = categoryOffsets[env.category];
+// Node circles
+node.append('circle')
+    .attr('r', d => getNodeSize(d))
+    .attr('fill', d => d.color)
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 2)
+    .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))');
 
-                // Create spiral pattern within each cluster for density
-                const spiralRadius = (offset / catInfo.count) * 80 + 40;
-                const spiralAngle = offset * 0.8 + (Math.random() - 0.5) * 0.4;
+// Node icons (text emoji)
+node.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'central')
+    .attr('font-size', d => getNodeSize(d) * 0.6)
+    .attr('pointer-events', 'none')
+    .style('user-select', 'none')
+    .text(d => d.icon);
 
-                const clusterX = Math.cos(catInfo.angle) * clusterRadius;
-                const clusterY = Math.sin(catInfo.angle) * clusterRadius;
+// Actor count badge (cleaner, smaller)
+node.filter(d => d.actors > 50)
+    .append('g')
+    .attr('class', 'actor-badge')
+    .each(function(d) {
+        const badge = d3.select(this);
+        const size = getNodeSize(d);
+        const badgeSize = 14;
 
-                const localX = Math.cos(spiralAngle) * spiralRadius;
-                const localY = Math.sin(spiralAngle) * spiralRadius;
+        badge.append('circle')
+            .attr('cx', size * 0.5)
+            .attr('cy', -size * 0.5)
+            .attr('r', badgeSize)
+            .attr('fill', '#d4af37')
+            .attr('stroke', '#000')
+            .attr('stroke-width', 1.5);
 
-                env.x = centerX + clusterX + localX;
-                env.y = centerY + clusterY + localY;
-                env.vx = (Math.random() - 0.5) * 0.25;
-                env.vy = (Math.random() - 0.5) * 0.25;
+        badge.append('text')
+            .attr('x', size * 0.5)
+            .attr('y', -size * 0.5)
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'central')
+            .attr('font-size', '9px')
+            .attr('font-weight', 'bold')
+            .attr('fill', '#000')
+            .attr('pointer-events', 'none')
+            .text(d.actors > 999 ? '999+' : d.actors);
+    });
 
-                categoryOffsets[env.category]++;
-            });
-        }
+// Node interactions
+node.on('mouseover', function(event, d) {
+    d3.select(this).select('circle')
+        .transition().duration(200)
+        .attr('r', getNodeSize(d) * 1.2)
+        .attr('stroke-width', 3);
 
-        // Calculate node size based on actors and age (dramatic variance)
-        function getNodeSize(env) {
-            // More dramatic exponential scaling
-            // Actor contribution: 0-50 points (heavily weighted)
-            const actorFactor = Math.pow(env.actors / 10, 0.7);
+    showTooltip(event, d);
+})
+.on('mousemove', function(event) {
+    tooltip.style.left = event.pageX + 'px';
+    tooltip.style.top = (event.pageY - 20) + 'px';
+})
+.on('mouseout', function(event, d) {
+    d3.select(this).select('circle')
+        .transition().duration(200)
+        .attr('r', getNodeSize(d))
+        .attr('stroke-width', 2);
 
-            // Age contribution: 0-25 points (grows with maturity)
-            const ageFactor = Math.pow(env.ageWeeks, 0.85) * 1.5;
+    hideTooltip();
+});
 
-            // Combined size with much wider range: 15px to 90px
-            const baseSize = actorFactor + ageFactor;
-            return Math.max(15, Math.min(90, baseSize));
-        }
+// Update positions on simulation tick
+simulation.on('tick', () => {
+    link
+        .attr('x1', d => d.source.x)
+        .attr('y1', d => d.source.y)
+        .attr('x2', d => d.target.x)
+        .attr('y2', d => d.target.y);
 
-        // Update node positions with gentle floating
-        function updatePositions() {
-            const displayWidth = canvas.clientWidth || canvas.width;
-            const displayHeight = canvas.clientHeight || canvas.height;
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+});
 
-            environments.forEach(env => {
-                // Apply velocity
-                env.x += env.vx;
-                env.y += env.vy;
+// Helper functions
+function getNodeSize(env) {
+    const actorFactor = Math.pow(env.actors / 10, 0.7);
+    const ageFactor = Math.pow(env.ageWeeks, 0.85) * 1.5;
+    const baseSize = actorFactor + ageFactor;
+    return Math.max(20, Math.min(60, baseSize));
+}
 
-                // Gentle random movement
-                env.vx += (Math.random() - 0.5) * 0.05;
-                env.vy += (Math.random() - 0.5) * 0.05;
+function dragstarted(event, d) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+}
 
-                // Damping
-                env.vx *= 0.98;
-                env.vy *= 0.98;
+function dragged(event, d) {
+    d.fx = event.x;
+    d.fy = event.y;
+}
 
-                // Boundary collision with soft bounce
-                const margin = 100;
-                if (env.x < margin || env.x > displayWidth - margin) {
-                    env.vx *= -0.5;
-                    env.x = Math.max(margin, Math.min(displayWidth - margin, env.x));
-                }
-                if (env.y < margin || env.y > displayHeight - margin) {
-                    env.vy *= -0.5;
-                    env.y = Math.max(margin, Math.min(displayHeight - margin, env.y));
-                }
+function dragended(event, d) {
+    if (!event.active) simulation.alphaTarget(0);
+    d.fx = null;
+    d.fy = null;
+}
 
-                // Gentle pull toward center
-                const centerX = displayWidth / 2;
-                const centerY = displayHeight / 2;
-                const dx = centerX - env.x;
-                const dy = centerY - env.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist > 250) {
-                    env.vx += (dx / dist) * 0.02;
-                    env.vy += (dy / dist) * 0.02;
-                }
-            });
-        }
+function showTooltip(event, env) {
+    tooltip.innerHTML = `
+        <div class="tooltip-category">${env.category}</div>
+        <div class="tooltip-header">
+            <span class="tooltip-icon">${env.icon}</span>
+            <h3 class="tooltip-title">${env.name}</h3>
+        </div>
+        <p class="tooltip-description">${env.description}</p>
+        <div class="tooltip-stats">
+            <div class="tooltip-stat">
+                <span class="tooltip-stat-label">Active Contributors</span>
+                <span class="tooltip-stat-value">${env.actors}</span>
+            </div>
+            <div class="tooltip-stat">
+                <span class="tooltip-stat-label">Environment Age</span>
+                <span class="tooltip-stat-value">${env.ageWeeks} weeks</span>
+            </div>
+            <div class="tooltip-stat">
+                <span class="tooltip-stat-label">Difficulty</span>
+                <span class="tooltip-stat-value">${env.difficulty}</span>
+            </div>
+            <div class="tooltip-stat">
+                <span class="tooltip-stat-label">Time Commitment</span>
+                <span class="tooltip-stat-value">${env.timeframe}</span>
+            </div>
+        </div>
+        <div class="tooltip-reward">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M10 6V14M7 9H12C12.5523 9 13 9.44772 13 10C13 10.5523 12.5523 11 12 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H13" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <span>${env.reward}</span>
+        </div>
+    `;
+    tooltip.classList.add('visible');
+}
 
-        // Draw connections between nodes
-        function drawConnections() {
-            connections.forEach(([id1, id2]) => {
-                const env1 = environments.find(e => e.id === id1);
-                const env2 = environments.find(e => e.id === id2);
+function hideTooltip() {
+    tooltip.classList.remove('visible');
+}
 
-                if (!env1 || !env2) return;
-                if (currentFilter !== 'all' && env1.category !== currentFilter && env2.category !== currentFilter) return;
+// Filter functionality
+document.querySelectorAll('.network-filter').forEach(button => {
+    button.addEventListener('click', () => {
+        document.querySelectorAll('.network-filter').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        currentFilter = button.dataset.category;
 
-                const distance = Math.sqrt(Math.pow(env1.x - env2.x, 2) + Math.pow(env1.y - env2.y, 2));
-                const opacity = Math.max(0, 1 - distance / 400) * 0.15;
-
-                ctx.beginPath();
-                ctx.moveTo(env1.x, env1.y);
-                ctx.lineTo(env2.x, env2.y);
-                ctx.strokeStyle = `rgba(91, 154, 168, ${opacity})`;
-                ctx.lineWidth = 1;
-                ctx.stroke();
-
-                // Animated particles along connections
-                if (Math.random() > 0.98) {
-                    const t = Math.random();
-                    const px = env1.x + (env2.x - env1.x) * t;
-                    const py = env1.y + (env2.y - env1.y) * t;
-
-                    ctx.beginPath();
-                    ctx.arc(px, py, 2, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(91, 154, 168, 0.4)';
-                    ctx.fill();
-                }
-            });
-        }
-
-        // Draw nodes
-        function drawNodes() {
-            const time = Date.now() / 1000;
-
-            environments.forEach(env => {
-                if (currentFilter !== 'all' && env.category !== currentFilter) {
-                    return;
-                }
-
-                const size = getNodeSize(env);
-                const isHovered = hoveredNode === env;
-                const pulseSize = size + Math.sin(time * 2 + env.id) * 2;
-
-                // Outer glow
-                const gradient = ctx.createRadialGradient(env.x, env.y, 0, env.x, env.y, pulseSize + 10);
-                gradient.addColorStop(0, env.color + '40');
-                gradient.addColorStop(0.5, env.color + '20');
-                gradient.addColorStop(1, env.color + '00');
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.arc(env.x, env.y, pulseSize + 10, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Node circle
-                ctx.beginPath();
-                ctx.arc(env.x, env.y, isHovered ? size * 1.2 : pulseSize, 0, Math.PI * 2);
-                ctx.fillStyle = isHovered ? env.color : env.color + 'cc';
-                ctx.fill();
-
-                // Border
-                ctx.strokeStyle = isHovered ? '#ffffff' : env.color;
-                ctx.lineWidth = isHovered ? 3 : 2;
-                ctx.stroke();
-
-                // Icon with better rendering
-                ctx.save();
-                ctx.font = `bold ${Math.floor(size * 0.7)}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", Arial`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillStyle = '#ffffff';
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
-                ctx.shadowBlur = 4;
-                ctx.fillText(env.icon, env.x, env.y);
-                ctx.restore();
-
-                // Actor count indicator (small badge) with golden accent
-                if (!isHovered && size > 25) {
-                    const badgeX = env.x + size * 0.55;
-                    const badgeY = env.y - size * 0.55;
-                    const badgeRadius = Math.max(10, size * 0.22);
-
-                    ctx.beginPath();
-                    ctx.arc(badgeX, badgeY, badgeRadius, 0, Math.PI * 2);
-                    ctx.fillStyle = '#d4af37';
-                    ctx.fill();
-                    ctx.strokeStyle = '#000000';
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
-
-                    ctx.font = `bold ${Math.floor(badgeRadius * 1.2)}px Arial`;
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillStyle = '#000000';
-                    ctx.fillText(env.actors, badgeX, badgeY);
-                }
-            });
-        }
-
-        // Animation loop
-        function animate() {
-            const displayWidth = canvas.clientWidth || canvas.width;
-            const displayHeight = canvas.clientHeight || canvas.height;
-
-            // Clear canvas
-            ctx.clearRect(0, 0, displayWidth, displayHeight);
-
-            // Draw subtle grid for debugging (remove later)
-            // ctx.strokeStyle = 'rgba(0, 217, 255, 0.05)';
-            // ctx.lineWidth = 1;
-            // for (let i = 0; i < canvas.width; i += 50) {
-            //     ctx.beginPath();
-            //     ctx.moveTo(i, 0);
-            //     ctx.lineTo(i, canvas.height);
-            //     ctx.stroke();
-            // }
-            // for (let i = 0; i < canvas.height; i += 50) {
-            //     ctx.beginPath();
-            //     ctx.moveTo(0, i);
-            //     ctx.lineTo(canvas.width, i);
-            //     ctx.stroke();
-            // }
-
-            updatePositions();
-            drawConnections();
-            drawNodes();
-
-            animationId = requestAnimationFrame(animate);
-        }
-
-        // Mouse movement for hover detection
-        canvas.addEventListener('mousemove', (e) => {
-            const rect = canvas.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-
-            let found = null;
-            environments.forEach(env => {
-                if (currentFilter !== 'all' && env.category !== currentFilter) return;
-
-                const size = getNodeSize(env);
-                const distance = Math.sqrt(Math.pow(mouseX - env.x, 2) + Math.pow(mouseY - env.y, 2));
-                if (distance < size) {
-                    found = env;
-                }
-            });
-
-            if (found !== hoveredNode) {
-                hoveredNode = found;
-                if (hoveredNode) {
-                    showTooltip(hoveredNode, e.clientX, e.clientY);
-                } else {
-                    hideTooltip();
-                }
-            } else if (hoveredNode) {
-                updateTooltipPosition(e.clientX, e.clientY);
-            }
+        // Filter nodes and links
+        node.style('opacity', d => currentFilter === 'all' || d.category === currentFilter ? 1 : 0.1);
+        link.style('opacity', d => {
+            const sourceMatch = currentFilter === 'all' || nodes[d.source.index].category === currentFilter;
+            const targetMatch = currentFilter === 'all' || nodes[d.target.index].category === currentFilter;
+            return (sourceMatch && targetMatch) ? 0.2 : 0.02;
         });
-
-        canvas.addEventListener('mouseleave', () => {
-            hoveredNode = null;
-            hideTooltip();
-        });
-
-        // Show tooltip
-        function showTooltip(env, x, y) {
-            tooltip.innerHTML = `
-                <div class="tooltip-category">${env.category}</div>
-                <div class="tooltip-header">
-                    <span class="tooltip-icon">${env.icon}</span>
-                    <h3 class="tooltip-title">${env.name}</h3>
-                </div>
-                <p class="tooltip-description">${env.description}</p>
-                <div class="tooltip-stats">
-                    <div class="tooltip-stat">
-                        <span class="tooltip-stat-label">Active Actors</span>
-                        <span class="tooltip-stat-value">${env.actors}</span>
-                    </div>
-                    <div class="tooltip-stat">
-                        <span class="tooltip-stat-label">Age</span>
-                        <span class="tooltip-stat-value">${env.ageWeeks} weeks</span>
-                    </div>
-                    <div class="tooltip-stat">
-                        <span class="tooltip-stat-label">Difficulty</span>
-                        <span class="tooltip-stat-value">${env.difficulty}</span>
-                    </div>
-                    <div class="tooltip-stat">
-                        <span class="tooltip-stat-label">Duration</span>
-                        <span class="tooltip-stat-value">${env.timeframe}</span>
-                    </div>
-                </div>
-                <div class="tooltip-reward">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="M10 6V14M7 9H12C12.5523 9 13 9.44772 13 10C13 10.5523 12.5523 11 12 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H13" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                    <span>${env.reward}</span>
-                </div>
-            `;
-            updateTooltipPosition(x, y);
-            tooltip.classList.add('visible');
-        }
-
-        // Update tooltip position
-        function updateTooltipPosition(x, y) {
-            tooltip.style.left = x + 'px';
-            tooltip.style.top = (y - 20) + 'px';
-        }
-
-        // Hide tooltip
-        function hideTooltip() {
-            tooltip.classList.remove('visible');
-        }
-
-        // Filter buttons
-        const filterButtons = document.querySelectorAll('.network-filter');
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                currentFilter = button.dataset.category;
-                hoveredNode = null;
-                hideTooltip();
-            });
-        });
-
-        // Initialize after a short delay to ensure layout is complete
-        setTimeout(() => {
-            resizeCanvas();
-
-            // Double-check canvas has dimensions
-            if (canvas.width === 0 || canvas.height === 0) {
-                console.error('Canvas still has zero dimensions after resize!');
-                console.log('Container dimensions:', canvas.parentElement.clientWidth, 'x', canvas.parentElement.clientHeight);
-            } else {
-                console.log('Starting animation...');
-                animate();
-            }
-        }, 50);
-
-        window.addEventListener('resize', resizeCanvas);
-
-        // Cleanup on page unload
-        window.addEventListener('beforeunload', () => {
-            if (animationId) {
-                cancelAnimationFrame(animationId);
-            }
-        });
+    });
+});
     }
 
-    // ============================================
     // Console Easter Egg
     // ============================================
     console.log('%cWelcome to OpenSims.ai! 🌌', 'color: #00d9ff; font-size: 24px; font-weight: bold;');
