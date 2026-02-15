@@ -294,9 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Initializing D3.js network visualization...');
 
         // Environment data with clustering - Realistic Business Domains
-        // Environment data with clustering - Realistic Business Domains
-// Realistic Business-Focused Environments
-const environments = [
+        const environments = [
     // Finance - 4 environments
     {
         id: 1,
@@ -731,8 +729,8 @@ const environments = [
         reward: '8,000-30,000 OSC',
         color: '#9b7aa8',
         x: 0, y: 0, vx: 0, vy: 0
-    }
-];
+        }
+        ];
 
         // Connection pairs - defines which environments are linked
         const connections = [
@@ -775,225 +773,224 @@ const environments = [
         // ============================================
         // D3.js Network Visualization
         // ============================================
-// D3.js Network Visualization for Environments
-const svg = d3.select('#environmentNetwork');
-let currentFilter = 'all';
+        const svg = d3.select('#environmentNetwork');
+        let currentFilter = 'all';
 
-// Get container dimensions
-const container = svg.node().parentElement;
-const width = container.clientWidth;
-const height = container.clientHeight;
+        // Get container dimensions
+        const container = svg.node().parentElement;
+        const width = container.clientWidth;
+        const height = container.clientHeight;
 
-svg.attr('width', width).attr('height', height);
+        svg.attr('width', width).attr('height', height);
 
-// Create groups for layers
-const g = svg.append('g');
-const linkGroup = g.append('g').attr('class', 'links');
-const nodeGroup = g.append('g').attr('class', 'nodes');
+        // Create groups for layers
+        const g = svg.append('g');
+        const linkGroup = g.append('g').attr('class', 'links');
+        const nodeGroup = g.append('g').attr('class', 'nodes');
 
-// Enable zoom
-const zoom = d3.zoom()
-    .scaleExtent([0.5, 3])
-    .on('zoom', (event) => {
-        g.attr('transform', event.transform);
-    });
+        // Enable zoom
+        const zoom = d3.zoom()
+            .scaleExtent([0.5, 3])
+            .on('zoom', (event) => {
+                g.attr('transform', event.transform);
+            });
 
-svg.call(zoom);
+        svg.call(zoom);
 
-// Prepare data
-const nodes = environments.map(d => ({...d}));
-const links = connections.map(([source, target]) => ({
-    source: source - 1,  // D3 uses 0-based indexing
-    target: target - 1
-}));
+        // Prepare data
+        const nodes = environments.map(d => ({...d}));
+        const links = connections.map(([source, target]) => ({
+            source: source - 1,  // D3 uses 0-based indexing
+            target: target - 1
+        }));
 
-// Create force simulation
-const simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links)
-        .id(d => d.id - 1)
-        .distance(80))
-    .force('charge', d3.forceManyBody().strength(-300))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius(d => getNodeSize(d) + 5));
+        // Create force simulation
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links)
+                .id(d => d.id - 1)
+                .distance(80))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(width / 2, height / 2))
+            .force('collision', d3.forceCollide().radius(d => getNodeSize(d) + 5));
 
-// Draw links
-const link = linkGroup.selectAll('line')
-    .data(links)
-    .join('line')
-    .attr('stroke', 'rgba(91, 154, 168, 0.2)')
-    .attr('stroke-width', 1);
+        // Draw links
+        const link = linkGroup.selectAll('line')
+            .data(links)
+            .join('line')
+            .attr('stroke', 'rgba(91, 154, 168, 0.2)')
+            .attr('stroke-width', 1);
 
-// Draw nodes
-const node = nodeGroup.selectAll('g')
-    .data(nodes)
-    .join('g')
-    .attr('class', 'node')
-    .call(d3.drag()
-        .on('start', dragstarted)
-        .on('drag', dragged)
-        .on('end', dragended));
+        // Draw nodes
+        const node = nodeGroup.selectAll('g')
+            .data(nodes)
+            .join('g')
+            .attr('class', 'node')
+            .call(d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended));
 
-// Node circles
-node.append('circle')
-    .attr('r', d => getNodeSize(d))
-    .attr('fill', d => d.color)
-    .attr('stroke', '#fff')
-    .attr('stroke-width', 2)
-    .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))');
+        // Node circles
+        node.append('circle')
+            .attr('r', d => getNodeSize(d))
+            .attr('fill', d => d.color)
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 2)
+            .style('filter', 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))');
 
-// Node icons (text emoji)
-node.append('text')
-    .attr('text-anchor', 'middle')
-    .attr('dominant-baseline', 'central')
-    .attr('font-size', d => getNodeSize(d) * 0.6)
-    .attr('pointer-events', 'none')
-    .style('user-select', 'none')
-    .text(d => d.icon);
-
-// Actor count badge (cleaner, smaller)
-node.filter(d => d.actors > 50)
-    .append('g')
-    .attr('class', 'actor-badge')
-    .each(function(d) {
-        const badge = d3.select(this);
-        const size = getNodeSize(d);
-        const badgeSize = 14;
-
-        badge.append('circle')
-            .attr('cx', size * 0.5)
-            .attr('cy', -size * 0.5)
-            .attr('r', badgeSize)
-            .attr('fill', '#d4af37')
-            .attr('stroke', '#000')
-            .attr('stroke-width', 1.5);
-
-        badge.append('text')
-            .attr('x', size * 0.5)
-            .attr('y', -size * 0.5)
+        // Node icons (text emoji)
+        node.append('text')
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'central')
-            .attr('font-size', '9px')
-            .attr('font-weight', 'bold')
-            .attr('fill', '#000')
+            .attr('font-size', d => getNodeSize(d) * 0.6)
             .attr('pointer-events', 'none')
-            .text(d.actors > 999 ? '999+' : d.actors);
-    });
+            .style('user-select', 'none')
+            .text(d => d.icon);
 
-// Node interactions
-node.on('mouseover', function(event, d) {
-    d3.select(this).select('circle')
-        .transition().duration(200)
-        .attr('r', getNodeSize(d) * 1.2)
-        .attr('stroke-width', 3);
+        // Actor count badge (cleaner, smaller)
+        node.filter(d => d.actors > 50)
+            .append('g')
+            .attr('class', 'actor-badge')
+            .each(function(d) {
+                const badge = d3.select(this);
+                const size = getNodeSize(d);
+                const badgeSize = 14;
 
-    showTooltip(event, d);
-})
-.on('mousemove', function(event) {
-    networkTooltip.style.left = event.pageX + 'px';
-    networkTooltip.style.top = (event.pageY - 20) + 'px';
-})
-.on('mouseout', function(event, d) {
-    d3.select(this).select('circle')
-        .transition().duration(200)
-        .attr('r', getNodeSize(d))
-        .attr('stroke-width', 2);
+                badge.append('circle')
+                    .attr('cx', size * 0.5)
+                    .attr('cy', -size * 0.5)
+                    .attr('r', badgeSize)
+                    .attr('fill', '#d4af37')
+                    .attr('stroke', '#000')
+                    .attr('stroke-width', 1.5);
 
-    hideTooltip();
-});
+                badge.append('text')
+                    .attr('x', size * 0.5)
+                    .attr('y', -size * 0.5)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'central')
+                    .attr('font-size', '9px')
+                    .attr('font-weight', 'bold')
+                    .attr('fill', '#000')
+                    .attr('pointer-events', 'none')
+                    .text(d.actors > 999 ? '999+' : d.actors);
+            });
 
-// Update positions on simulation tick
-simulation.on('tick', () => {
-    link
-        .attr('x1', d => d.source.x)
-        .attr('y1', d => d.source.y)
-        .attr('x2', d => d.target.x)
-        .attr('y2', d => d.target.y);
+        // Node interactions
+        node.on('mouseover', function(event, d) {
+            d3.select(this).select('circle')
+                .transition().duration(200)
+                .attr('r', getNodeSize(d) * 1.2)
+                .attr('stroke-width', 3);
 
-    node.attr('transform', d => `translate(${d.x},${d.y})`);
-});
+            showTooltip(event, d);
+        })
+        .on('mousemove', function(event) {
+            networkTooltip.style.left = event.pageX + 'px';
+            networkTooltip.style.top = (event.pageY - 20) + 'px';
+        })
+        .on('mouseout', function(event, d) {
+            d3.select(this).select('circle')
+                .transition().duration(200)
+                .attr('r', getNodeSize(d))
+                .attr('stroke-width', 2);
 
-// Helper functions
-function getNodeSize(env) {
-    const actorFactor = Math.pow(env.actors / 10, 0.7);
-    const ageFactor = Math.pow(env.ageWeeks, 0.85) * 1.5;
-    const baseSize = actorFactor + ageFactor;
-    return Math.max(20, Math.min(60, baseSize));
-}
-
-function dragstarted(event, d) {
-    if (!event.active) simulation.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-}
-
-function dragged(event, d) {
-    d.fx = event.x;
-    d.fy = event.y;
-}
-
-function dragended(event, d) {
-    if (!event.active) simulation.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
-}
-
-function showTooltip(event, env) {
-    networkTooltip.innerHTML = `
-        <div class="tooltip-category">${env.category}</div>
-        <div class="tooltip-header">
-            <span class="tooltip-icon">${env.icon}</span>
-            <h3 class="tooltip-title">${env.name}</h3>
-        </div>
-        <p class="tooltip-description">${env.description}</p>
-        <div class="tooltip-stats">
-            <div class="tooltip-stat">
-                <span class="tooltip-stat-label">Active Contributors</span>
-                <span class="tooltip-stat-value">${env.actors}</span>
-            </div>
-            <div class="tooltip-stat">
-                <span class="tooltip-stat-label">Environment Age</span>
-                <span class="tooltip-stat-value">${env.ageWeeks} weeks</span>
-            </div>
-            <div class="tooltip-stat">
-                <span class="tooltip-stat-label">Difficulty</span>
-                <span class="tooltip-stat-value">${env.difficulty}</span>
-            </div>
-            <div class="tooltip-stat">
-                <span class="tooltip-stat-label">Time Commitment</span>
-                <span class="tooltip-stat-value">${env.timeframe}</span>
-            </div>
-        </div>
-        <div class="tooltip-reward">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M10 6V14M7 9H12C12.5523 9 13 9.44772 13 10C13 10.5523 12.5523 11 12 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H13" stroke="currentColor" stroke-width="1.5"/>
-            </svg>
-            <span>${env.reward}</span>
-        </div>
-    `;
-    networkTooltip.classList.add('visible');
-}
-
-function hideTooltip() {
-    networkTooltip.classList.remove('visible');
-}
-
-// Filter functionality
-document.querySelectorAll('.network-filter').forEach(button => {
-    button.addEventListener('click', () => {
-        document.querySelectorAll('.network-filter').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        currentFilter = button.dataset.category;
-
-        // Filter nodes and links
-        node.style('opacity', d => currentFilter === 'all' || d.category === currentFilter ? 1 : 0.1);
-        link.style('opacity', d => {
-            const sourceMatch = currentFilter === 'all' || nodes[d.source.index].category === currentFilter;
-            const targetMatch = currentFilter === 'all' || nodes[d.target.index].category === currentFilter;
-            return (sourceMatch && targetMatch) ? 0.2 : 0.02;
+            hideTooltip();
         });
-    });
-});
+
+        // Update positions on simulation tick
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
+        });
+
+        // Helper functions
+        function getNodeSize(env) {
+            const actorFactor = Math.pow(env.actors / 10, 0.7);
+            const ageFactor = Math.pow(env.ageWeeks, 0.85) * 1.5;
+            const baseSize = actorFactor + ageFactor;
+            return Math.max(20, Math.min(60, baseSize));
+        }
+
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        function showTooltip(event, env) {
+            networkTooltip.innerHTML = `
+                <div class="tooltip-category">${env.category}</div>
+                <div class="tooltip-header">
+                    <span class="tooltip-icon">${env.icon}</span>
+                    <h3 class="tooltip-title">${env.name}</h3>
+                </div>
+                <p class="tooltip-description">${env.description}</p>
+                <div class="tooltip-stats">
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Active Contributors</span>
+                        <span class="tooltip-stat-value">${env.actors}</span>
+                    </div>
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Environment Age</span>
+                        <span class="tooltip-stat-value">${env.ageWeeks} weeks</span>
+                    </div>
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Difficulty</span>
+                        <span class="tooltip-stat-value">${env.difficulty}</span>
+                    </div>
+                    <div class="tooltip-stat">
+                        <span class="tooltip-stat-label">Time Commitment</span>
+                        <span class="tooltip-stat-value">${env.timeframe}</span>
+                    </div>
+                </div>
+                <div class="tooltip-reward">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                        <path d="M10 6V14M7 9H12C12.5523 9 13 9.44772 13 10C13 10.5523 12.5523 11 12 11H8C7.44772 11 7 11.4477 7 12C7 12.5523 7.44772 13 8 13H13" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                    <span>${env.reward}</span>
+                </div>
+            `;
+            networkTooltip.classList.add('visible');
+        }
+
+        function hideTooltip() {
+            networkTooltip.classList.remove('visible');
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.network-filter').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.network-filter').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                currentFilter = button.dataset.category;
+
+                // Filter nodes and links
+                node.style('opacity', d => currentFilter === 'all' || d.category === currentFilter ? 1 : 0.1);
+                link.style('opacity', d => {
+                    const sourceMatch = currentFilter === 'all' || nodes[d.source.index].category === currentFilter;
+                    const targetMatch = currentFilter === 'all' || nodes[d.target.index].category === currentFilter;
+                    return (sourceMatch && targetMatch) ? 0.2 : 0.02;
+                });
+            });
+        });
     }
 
     // Console Easter Egg
